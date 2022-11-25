@@ -20,6 +20,7 @@ export default function LoginForm() {
         <LoginInput />
         <LoginSearchBtn>아이디 찾기</LoginSearchBtn>
         <LoginSearchBtn>비밀번호 찾기</LoginSearchBtn>
+        <LoginBtn onClick={loginHanlder}>Login</LoginBtn>
 
         <AuthButton
           src={`${publicUrl}/assets/btn_google_signin_dark_normal_web.png`}
@@ -58,6 +59,8 @@ const LoginInput = styled.input`
   border: 1px solid black;
   margin: 1px;
 `
+
+const LoginBtn = styled.button``
 
 const LoginSearchBtn = styled.button``
 
