@@ -1,15 +1,28 @@
-import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { Nav } from './components'
-import Main from './pages/Main'
+import { Main, Login } from './pages'
 
 export default function Router() {
+  const location = useLocation()
+  const navigation = useNavigate()
+  const isAuthentication = useSelector((state) => state.auth.isAuthentication)
+
+  useEffect(() => {
+    if (!isAuthentication && location.pathname !== '/') {
+      navigation('/', { replace: true })
+    }
+  }, [])
+
   return (
     <RouterContainer>
-      <Nav />
+      {location.pathname !== '/' && <Nav />}
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/main" element={<Main />} />
       </Routes>
     </RouterContainer>
   )
