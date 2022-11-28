@@ -9,7 +9,7 @@ export default function LoginForm() {
   const navigation = useNavigate()
   const loginHanlder = () => {
     dispatch(authActions.login())
-    navigation('/main', { replace: true })
+    navigation('/management', { replace: true })
   }
 
   return (
