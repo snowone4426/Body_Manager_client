@@ -1,15 +1,15 @@
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { authActions } from '../../store/auth'
+import { authActions } from '../../store/authentication/auth'
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
   const dispatch = useDispatch()
   const navigation = useNavigate()
   const loginHanlder = () => {
     dispatch(authActions.login())
-    navigation('/main', { replace: true })
+    navigation('/management', { replace: true })
   }
 
   return (

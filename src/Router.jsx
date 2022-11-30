@@ -4,7 +4,14 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { Nav } from './components'
-import { Main, Login } from './pages'
+import { Management, Login } from './pages'
+import {
+  MainDefault,
+  Attendance,
+  Diet,
+  ExercisePlan,
+  InbodyResister,
+} from './components'
 
 export default function Router() {
   const location = useLocation()
@@ -22,10 +29,23 @@ export default function Router() {
       {location.pathname !== '/' && <Nav />}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/main" element={<Main />} />
+        <Route path="management" element={<Management />}>
+          <Route path="" element={<MainDefault />} />
+          <Route path="diet" element={<Diet />} />
+          <Route path="inbodyresister" element={<InbodyResister />} />
+          <Route path="attendance" element={<Attendance />} />
+          <Route path="exerciseplan" element={<ExercisePlan />} />
+        </Route>
+        <Route path="chart" element={<div>Chart</div>} />
+        <Route path="account" element={<div>Account</div>} />
+        <Route path="member" element={<div>Member</div>} />
       </Routes>
     </RouterContainer>
   )
 }
 
-const RouterContainer = styled.div``
+const RouterContainer = styled.div`
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+`
