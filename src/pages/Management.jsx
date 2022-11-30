@@ -1,7 +1,10 @@
-import styled from 'styled-components'
+import { Outlet } from 'react-router-dom'
+import { ManagementSkeleton } from '../components'
 
 export default function Management() {
-  return <ManagementContainer>asdsad</ManagementContainer>
+  return (
+    <ManagementSkeleton>
+      <Outlet />
+    </ManagementSkeleton>
+  )
 }
-
-const ManagementContainer = styled.div``

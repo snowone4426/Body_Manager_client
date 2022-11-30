@@ -34,8 +34,8 @@ export default function Nav() {
   if (userInfo.type === 'trainer' || userInfo.type === 'admin') {
     btnListDataArr.push({
       icon: <FaSearch className="icon" size="24" />,
-      context: 'Account',
-      onClickFn: () => navButtonClickHandler('account'),
+      context: 'Member',
+      onClickFn: () => navButtonClickHandler('member'),
     })
   }
 
@@ -58,11 +58,10 @@ const NavContainer = styled.nav`
   align-items: center;
   width: 13rem;
   padding: 1rem;
-  /* background-color: yellow; */
 `
 
 const Logo = styled.div`
-  width: 10rem;
+  width: 12rem;
   height: 3rem;
   border-radius: 0.5rem;
   background-color: black;

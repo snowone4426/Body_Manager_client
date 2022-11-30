@@ -16,7 +16,7 @@ const authSlice = createSlice({
     login(state) {
       state.isAuthentication = true
       state.name = '임시 이름'
-      state.type = 'admin'
+      state.type = 'common'
       state.profile = `${publicURL}/assets/userProfile.jpeg`
     },
     logout(state) {

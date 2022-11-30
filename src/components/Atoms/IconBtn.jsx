@@ -3,12 +3,10 @@ import styled from 'styled-components'
 
 export default function IconBtn({ onClickFn = () => {}, context, children }) {
   const location = useLocation()
-  console.log(location.pathname)
-  console.log(context.toLowerCase())
   return (
     <IconBtnContainer
       onClick={onClickFn}
-      isSelect={location.pathname === '/' + context.toLowerCase()}
+      isSelect={location.pathname.split('/')[1] === context.toLowerCase()}
     >
       {children}
       <BtnText>{context}</BtnText>
