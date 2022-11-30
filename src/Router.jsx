@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { Nav } from './components'
-import { Management, Login } from './pages'
+import { Login, Management, Chart } from './pages'
 import {
   MainDefault,
   Attendance,
@@ -17,12 +17,14 @@ export default function Router() {
   const location = useLocation()
   const navigation = useNavigate()
   const isAuthentication = useSelector((state) => state.auth.isAuthentication)
+  const pathname = location.pathname
 
+  // 로그인이 되어있지 않다면 로그인 페이지로 이동시킴
   useEffect(() => {
-    if (!isAuthentication && location.pathname !== '/') {
+    if (!isAuthentication && pathname !== '/') {
       navigation('/', { replace: true })
     }
-  }, [])
+  }, [isAuthentication, navigation, pathname])
 
   return (
     <RouterContainer>
@@ -36,7 +38,7 @@ export default function Router() {
           <Route path="attendance" element={<Attendance />} />
           <Route path="exerciseplan" element={<ExercisePlan />} />
         </Route>
-        <Route path="chart" element={<div>Chart</div>} />
+        <Route path="chart" element={<Chart />} />
         <Route path="account" element={<div>Account</div>} />
         <Route path="member" element={<div>Member</div>} />
       </Routes>
