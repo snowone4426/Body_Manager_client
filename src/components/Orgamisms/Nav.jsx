@@ -41,22 +41,29 @@ export default function Nav() {
 
   return (
     <NavContainer>
-      <BtnFrame>
-        <Logo onClick={() => navButtonClickHandler('management')} />
-        <ChatBox />
-        <BtnList btnListDataArr={btnListDataArr} />
-      </BtnFrame>
-      <ProfileBox userInfo={userInfo} />
+      <NavFrame>
+        <BtnFrame>
+          <Logo onClick={() => navButtonClickHandler('management')} />
+          <ChatBox />
+          <BtnList btnListDataArr={btnListDataArr} />
+        </BtnFrame>
+        <ProfileBox userInfo={userInfo} />
+      </NavFrame>
     </NavContainer>
   )
 }
 
 const NavContainer = styled.nav`
-  display: inherit;
+  width: 15rem;
+`
+
+const NavFrame = styled.div`
+  position: fixed;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 13rem;
+  height: 100vh;
   padding: 1rem;
 `
 
