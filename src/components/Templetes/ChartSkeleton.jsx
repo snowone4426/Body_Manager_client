@@ -11,4 +11,8 @@ export default function ChartSkeleton() {
   )
 }
 
-const ChartSkeletonContainer = styled.div``
+const ChartSkeletonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+`

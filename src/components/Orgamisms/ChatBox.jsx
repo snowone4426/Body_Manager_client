@@ -2,12 +2,8 @@ import styled from 'styled-components'
 
 import { NoChatYet, ChatActive } from '..'
 
-export default function ChatBox({ trainerInfo = {} }) {
+export default function ChatBox({ trainerInfo = {}, clickFn = () => {} }) {
   trainerInfo = { srcUrl: '', name: '김헬창', type: 'trainer' }
-
-  const chatModalHanlder = () => {
-    alert('채팅 눌렀음')
-  }
 
   const isChat = Object.keys(trainerInfo).length !== 0
   const chatBox = isChat ? (
@@ -15,16 +11,13 @@ export default function ChatBox({ trainerInfo = {} }) {
   ) : (
     <NoChatYet />
   )
-  return (
-    <ChatBoxContainer onClick={chatModalHanlder}>{chatBox}</ChatBoxContainer>
-  )
+  return <ChatBoxContainer onClick={clickFn}>{chatBox}</ChatBoxContainer>
 }
 
 const ChatBoxContainer = styled.div`
   display: flex;
   align-items: center;
   height: 6rem;
-  /* border: 1px solid black; */
   border-radius: 1rem;
   margin: 2rem 0 1rem;
   padding: 1rem;

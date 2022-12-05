@@ -1,15 +1,28 @@
 import styled from 'styled-components'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { authActions } from '../../store/authentication/auth'
+import { ModalContainer, IdSearch, PasswordSearch } from '..'
+
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
   const dispatch = useDispatch()
   const navigation = useNavigate()
+  const [isModalOpen, setIsModalOpen] = useState('')
+
   const loginHanlder = () => {
     dispatch(authActions.login())
     navigation('/management', { replace: true })
+  }
+
+  const modalOpener = (name) => {
+    if (name === undefined) {
+      setIsModalOpen('')
+      return
+    }
+    setIsModalOpen(name)
   }
 
   return (
@@ -18,8 +31,20 @@ export default function LoginForm() {
         <LoginTitle>LOGIN</LoginTitle>
         <LoginInput />
         <LoginInput />
-        <LoginSearchBtn>아이디 찾기</LoginSearchBtn>
-        <LoginSearchBtn>비밀번호 찾기</LoginSearchBtn>
+        <LoginSearchBtn onClick={() => navigation('/signup')}>
+          회원가입
+        </LoginSearchBtn>
+        <LoginSearchBtn onClick={() => modalOpener('id')}>
+          아이디 찾기
+        </LoginSearchBtn>
+        <LoginSearchBtn onClick={() => modalOpener('password')}>
+          비밀번호 찾기
+        </LoginSearchBtn>
+        {isModalOpen && (
+          <ModalContainer onClickFn={modalOpener}>
+            {isModalOpen === 'id' ? <IdSearch /> : <PasswordSearch />}
+          </ModalContainer>
+        )}
         <LoginBtn onClick={loginHanlder}>Login</LoginBtn>
 
         <AuthButton
