@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { Nav } from './components'
-import { Login, Management, Chart } from './pages'
+import { Login, Management, Chart, Account } from './pages'
 import {
   MainDefault,
   Attendance,
@@ -39,7 +39,7 @@ export default function Router() {
           <Route path="exerciseplan" element={<ExercisePlan />} />
         </Route>
         <Route path="chart" element={<Chart />} />
-        <Route path="account" element={<div>Account</div>} />
+        <Route path="account" element={<Account />} />
         <Route path="member" element={<div>Member</div>} />
       </Routes>
     </RouterContainer>
