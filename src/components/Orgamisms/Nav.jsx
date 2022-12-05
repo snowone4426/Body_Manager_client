@@ -1,13 +1,15 @@
 import styled from 'styled-components'
-
-import { ProfileBox, BtnList, ChatBox } from '..'
-import { FaSearch } from 'react-icons/fa'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+
+import { ProfileBox, BtnList, ChatBox, ChatModal, ModalContainer } from '..'
+import { FaSearch } from 'react-icons/fa'
 
 export default function Nav() {
   const navigate = useNavigate()
   const userInfo = useSelector((state) => state.auth)
+  const [chatOpen, setChatOpen] = useState(false)
 
   const navButtonClickHandler = (param) => {
     navigate(`/${param}`)
@@ -39,12 +41,21 @@ export default function Nav() {
     })
   }
 
+  const ChatModalOpenHandler = () => {
+    setChatOpen(!chatOpen)
+  }
+
   return (
     <NavContainer>
       <NavFrame>
         <BtnFrame>
           <Logo onClick={() => navButtonClickHandler('management')} />
-          <ChatBox />
+          <ChatBox clickFn={ChatModalOpenHandler} />
+          {chatOpen && (
+            <ModalContainer onClickFn={ChatModalOpenHandler}>
+              <ChatModal />
+            </ModalContainer>
+          )}
           <BtnList btnListDataArr={btnListDataArr} />
         </BtnFrame>
         <ProfileBox userInfo={userInfo} />

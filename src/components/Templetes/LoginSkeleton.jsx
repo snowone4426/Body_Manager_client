@@ -13,4 +13,5 @@ export default function LoginSkeleton() {
 
 const LoginSkeletonContainer = styled.div`
   display: flex;
+  width: 100vw;
 `

@@ -13,5 +13,6 @@ export default function ManagementSkeleton({ children }) {
 
 const ManagementSkeletonContainer = styled.main`
   display: flex;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
 `
