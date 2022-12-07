@@ -17,6 +17,7 @@ const ProfileFrame = styled.div`
   border-radius: 100%;
   overflow: hidden;
   background-color: black;
+  z-index: 2;
 `
 
 const ProfileImg = styled.img`

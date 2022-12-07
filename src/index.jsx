@@ -9,12 +9,10 @@ import store from './store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <GlobalStyle />
-      <Provider store={store}>
-        <Router />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <GlobalStyle />
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  </BrowserRouter>,
 )

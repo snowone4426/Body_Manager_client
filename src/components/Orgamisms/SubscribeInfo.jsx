@@ -15,4 +15,8 @@ export default function SubscribeInfo() {
   )
 }
 
-const SubscribeInfoContainer = styled.section``
+const SubscribeInfoContainer = styled.section`
+  display: flex;
+  width: 60vw;
+  justify-content: space-between;
+`

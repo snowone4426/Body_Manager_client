@@ -33,7 +33,7 @@ export default function ManagementMenu() {
 
 const ManagementMenuContainer = styled.header`
   height: 40%;
-  background-color: yellow;
+  /* background-color: yellow; */
   padding: 0 1rem;
 `
 

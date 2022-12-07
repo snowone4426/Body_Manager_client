@@ -6,7 +6,10 @@ export default function CalanderAside() {
   return (
     <CalanderAsideContainer>
       <MainCalander />
-      <Illustration src="" alt="exercise" />
+      <Illustration
+        src={`${process.env.PUBLIC_URL}/assets/ride_female.png`}
+        alt="exercise"
+      />
     </CalanderAsideContainer>
   )
 }
@@ -16,10 +19,10 @@ const CalanderAsideContainer = styled.aside`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
-  padding: 2rem 0;
-  background-color: salmon;
+  width: 100%;
+  margin-top: 3rem;
 `
 const Illustration = styled.img`
-  background-color: black;
+  width: 60%;
+  opacity: 0.5;
 `

@@ -8,10 +8,6 @@ export default function ProfileBox({
   return (
     <ProfileContainer>
       <Profile srcUrl={userInfo.profile} />
-      <UserInfoFrame>
-        <UserName>{userInfo.name}</UserName>
-        <UserType>{userInfo.type}</UserType>
-      </UserInfoFrame>
     </ProfileContainer>
   )
 }
@@ -19,18 +15,6 @@ export default function ProfileBox({
 const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
-  align-self: flex-start;
-`
-
-const UserInfoFrame = styled.div`
-  margin-left: 0.5rem;
-`
-
-const UserName = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: 0.3rem;
-`
-
-const UserType = styled.p`
-  color: gray;
+  margin-bottom: 1rem;
+  cursor: pointer;
 `

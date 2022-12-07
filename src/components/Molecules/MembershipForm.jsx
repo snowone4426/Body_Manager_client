@@ -7,7 +7,6 @@ export default function MembershipForm({
     pt: [],
   },
   selectClickFn = () => {},
-  submitClickFn = () => {},
 }) {
   const [toggle, setToggle] = useState(true)
 
@@ -41,6 +40,8 @@ export default function MembershipForm({
   )
 
   const toggleHanlder = () => {
+    if (toggle) {
+    }
     setToggle(!toggle)
   }
 
@@ -58,7 +59,6 @@ export default function MembershipForm({
         <input type="checkbox" />
         <input type="number" />달
       </div>
-      <button onClick={submitClickFn}>구매</button>
     </MembershipFormContainer>
   )
 }

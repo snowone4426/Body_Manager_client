@@ -12,5 +12,5 @@ const MenuBtnContainer = styled.button`
   border-radius: 1rem;
   margin: 0.5rem;
   padding: 0.5rem;
-  background-color: white;
+  background-color: #f7f74053;
 `

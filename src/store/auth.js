@@ -7,17 +7,15 @@ const initialAuthState = {
   profile: '',
 }
 
-const publicURL = process.env.PUBLIC_URL
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialAuthState,
   reducers: {
-    login(state) {
+    login(state, action) {
       state.isAuthentication = true
-      state.name = '임시 이름'
-      state.type = 'common'
-      state.profile = `${publicURL}/assets/userProfile.jpeg`
+      state.name = action.payload.name
+      state.type = action.payload.type
+      state.profile = action.payload.profile
     },
     logout(state) {
       state.isAuthentication = false

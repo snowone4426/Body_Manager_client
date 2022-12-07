@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export default function SingleDiet({ info }) {
-  const { photo, context, created_at, grade } = info
+  const { photo, content, created_at, grade } = info
 
   return (
     <SingleDietContainer>
@@ -9,7 +9,7 @@ export default function SingleDiet({ info }) {
         <img src={photo} alt="food" />
       </PhotoFrame>
       <InfoFrame>
-        <div>{context}</div>
+        <div>{content}</div>
         <div>{created_at}</div>
       </InfoFrame>
       <ScoreColor>{grade}</ScoreColor>

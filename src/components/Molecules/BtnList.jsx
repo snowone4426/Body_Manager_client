@@ -16,4 +16,8 @@ export default function BtnList({ btnListDataArr = [] }) {
   )
 }
 
-const BtnListContainer = styled.ul``
+const BtnListContainer = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`

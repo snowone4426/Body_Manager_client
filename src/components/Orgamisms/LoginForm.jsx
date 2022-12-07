@@ -3,18 +3,25 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { authActions } from '../../store/authentication/auth'
+import { authActions } from '../../store/auth'
 import { ModalContainer, IdSearch, PasswordSearch } from '..'
 
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
   const dispatch = useDispatch()
-  const navigation = useNavigate()
+  const navigate = useNavigate()
+  const kakaoLink = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAOKEY}&redirect_uri=${process.env.REACT_APP_CLIENT_URL}/kakaologin`
+
   const [isModalOpen, setIsModalOpen] = useState('')
+  const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
 
   const loginHanlder = () => {
-    dispatch(authActions.login())
-    navigation('/management', { replace: true })
+    dispatch(authActions.login(loginInputData))
+    navigate('/management', { replace: true })
+  }
+
+  const onChangeHanlder = (e, key) => {
+    setLoginInputData({ ...loginInputData, [key]: e.target.value })
   }
 
   const modalOpener = (name) => {
@@ -28,33 +35,45 @@ export default function LoginForm() {
   return (
     <LoginFormContainer>
       <LoginFormFrame>
-        <LoginTitle>LOGIN</LoginTitle>
-        <LoginInput />
-        <LoginInput />
-        <LoginSearchBtn onClick={() => navigation('/signup')}>
-          회원가입
-        </LoginSearchBtn>
-        <LoginSearchBtn onClick={() => modalOpener('id')}>
-          아이디 찾기
-        </LoginSearchBtn>
-        <LoginSearchBtn onClick={() => modalOpener('password')}>
-          비밀번호 찾기
-        </LoginSearchBtn>
+        <LoginTitle>Body Manager</LoginTitle>
+        <LoginInput
+          onChange={(e) => onChangeHanlder(e, 'id')}
+          value={loginInputData.id}
+          placeholder="ID"
+        />
+        <LoginInput
+          onChange={(e) => onChangeHanlder(e, 'password')}
+          value={loginInputData.password}
+          placeholder="PASSWORD"
+        />
+        <BtnBox>
+          <LoginSearchBtn onClick={() => navigate('/signup')}>
+            회원가입
+          </LoginSearchBtn>
+          <LoginSearchBtn onClick={() => modalOpener('id')}>
+            아이디 찾기
+          </LoginSearchBtn>
+          <LoginSearchBtn onClick={() => modalOpener('password')}>
+            비밀번호 찾기
+          </LoginSearchBtn>
+        </BtnBox>
         {isModalOpen && (
           <ModalContainer onClickFn={modalOpener}>
-            {isModalOpen === 'id' ? <IdSearch /> : <PasswordSearch />}
+            {isModalOpen === 'id' ? (
+              <IdSearch modalOpener={modalOpener} />
+            ) : (
+              <PasswordSearch modalOpener={modalOpener} />
+            )}
           </ModalContainer>
         )}
         <LoginBtn onClick={loginHanlder}>Login</LoginBtn>
 
-        <AuthButton
-          src={`${publicUrl}/assets/btn_google_signin_dark_normal_web.png`}
-          alt="구글 소셜 로그인"
-        />
-        <AuthButton
-          src={`${publicUrl}/assets/kakao_login_medium_narrow.png`}
-          alt="카카오 소셜 로그인"
-        />
+        <AuthLink href={kakaoLink}>
+          <AuthButtonImg
+            src={`${publicUrl}/assets/kakao_login_medium_narrow.png`}
+            alt="카카오 소셜 로그인"
+          />
+        </AuthLink>
       </LoginFormFrame>
     </LoginFormContainer>
   )
@@ -73,20 +92,38 @@ const LoginFormFrame = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 20rem;
-  height: 20rem;
-  background-color: #f2f0d9;
+  width: 25rem;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: #edece0;
 `
 
-const LoginTitle = styled.div``
+const LoginTitle = styled.div`
+  font-size: 1.7rem;
+`
 
 const LoginInput = styled.input`
+  width: 18rem;
+  height: 2.5rem;
   border: 1px solid black;
-  margin: 1px;
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+  padding: 1rem;
 `
 
-const LoginBtn = styled.button``
+const LoginBtn = styled.button`
+  width: 18rem;
+  height: 2.5rem;
+  border: 1px solid black;
+  border-radius: 0.4rem;
+  background-color: white;
+`
+
+const BtnBox = styled.div``
 
 const LoginSearchBtn = styled.button``
 
-const AuthButton = styled.img``
+const AuthLink = styled.a``
+
+const AuthButtonImg = styled.img``

@@ -17,5 +17,4 @@ const ManagementMainContainer = styled.section`
 
 const MainArticle = styled.article`
   height: 60%;
-  /* background-color: skyblue; */
 `

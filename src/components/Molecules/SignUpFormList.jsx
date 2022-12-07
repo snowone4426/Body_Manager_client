@@ -2,7 +2,8 @@ import styled from 'styled-components'
 import { useDaumPostcodePopup } from 'react-daum-postcode'
 
 export default function SignUpFormList({
-  inputFn = () => {},
+  inputFn = (e, key) => {},
+  duplicateCheckHanlder = () => {},
   data = {
     email: '',
     password: '',
@@ -35,7 +36,6 @@ export default function SignUpFormList({
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : ''
     }
 
-    // console.log(fullAddress)
     inputFn(fullAddress, 'address')
   }
 
@@ -46,32 +46,46 @@ export default function SignUpFormList({
   return (
     <SignUpFormListContainer>
       {dataArr.map((el) => {
-        if (el === 'profile') {
-          return (
-            <li key={el}>
-              <input type="file" onChange={(e) => inputFn(e, el)} />
-            </li>
-          )
+        switch (el) {
+          case 'profile':
+            return (
+              <li key={el}>
+                <input type="file" onChange={(e) => inputFn(e, el)} />
+              </li>
+            )
+          case 'address':
+            return (
+              <li key={el}>
+                <button type="button" onClick={handleClick}>
+                  Open
+                </button>
+              </li>
+            )
+          case 'email':
+          case 'phone':
+            return (
+              <li key={el}>
+                <input
+                  type="text"
+                  onChange={(e) => inputFn(e, el)}
+                  value={data[el]}
+                />
+                <button onClick={() => duplicateCheckHanlder(el)}>
+                  중복확인
+                </button>
+              </li>
+            )
+          default:
+            return (
+              <li key={el}>
+                <input
+                  type="text"
+                  onChange={(e) => inputFn(e, el)}
+                  value={data[el]}
+                />
+              </li>
+            )
         }
-        if (el === 'address') {
-          return (
-            <li key={el}>
-              <button type="button" onClick={handleClick}>
-                Open
-              </button>
-            </li>
-          )
-        }
-
-        return (
-          <li key={el}>
-            <input
-              type="text"
-              onChange={(e) => inputFn(e, el)}
-              value={data[el]}
-            />
-          </li>
-        )
       })}
     </SignUpFormListContainer>
   )

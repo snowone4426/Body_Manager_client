@@ -1,13 +1,21 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  FaUser,
+  FaCommentDots,
+  FaHeartbeat,
+  FaIdCard,
+  FaMoneyCheck,
+} from 'react-icons/fa'
 
-import { ProfileBox, BtnList, ChatBox, ChatModal, ModalContainer } from '..'
-import { FaSearch } from 'react-icons/fa'
+import { ProfileBox, BtnList, ChatModal, ModalContainer } from '..'
+import { authActions } from '../../store/auth'
 
 export default function Nav() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.auth)
   const [chatOpen, setChatOpen] = useState(false)
 
@@ -15,27 +23,32 @@ export default function Nav() {
     navigate(`/${param}`)
   }
 
+  const LogoutHanlder = () => {
+    navigate(`/`, { replace: true })
+    dispatch(authActions.logout())
+  }
+
   const btnListDataArr = [
     {
-      icon: <FaSearch className="icon" size="24" />,
-      context: 'Management',
+      icon: <FaUser className="icon" size="50" />,
+      context: 'management',
       onClickFn: () => navButtonClickHandler('management'),
     },
     {
-      icon: <FaSearch className="icon" size="24" />,
-      context: 'Chart',
+      icon: <FaHeartbeat className="icon" size="50" />,
+      context: 'chart',
       onClickFn: () => navButtonClickHandler('chart'),
     },
     {
-      icon: <FaSearch className="icon" size="24" />,
-      context: 'Account',
+      icon: <FaMoneyCheck className="icon" size="50" />,
+      context: 'account',
       onClickFn: () => navButtonClickHandler('account'),
     },
   ]
 
   if (userInfo.type === 'trainer' || userInfo.type === 'admin') {
     btnListDataArr.push({
-      icon: <FaSearch className="icon" size="24" />,
+      icon: <FaIdCard className="icon" size="50" />,
       context: 'Member',
       onClickFn: () => navButtonClickHandler('member'),
     })
@@ -50,7 +63,6 @@ export default function Nav() {
       <NavFrame>
         <BtnFrame>
           <Logo onClick={() => navButtonClickHandler('management')} />
-          <ChatBox clickFn={ChatModalOpenHandler} />
           {chatOpen && (
             <ModalContainer onClickFn={ChatModalOpenHandler}>
               <ChatModal />
@@ -60,12 +72,23 @@ export default function Nav() {
         </BtnFrame>
         <ProfileBox userInfo={userInfo} />
       </NavFrame>
+      <TopBtnBox>
+        <TopBtn onClick={ChatModalOpenHandler}>
+          <FaCommentDots className="icon" size="20" />
+        </TopBtn>
+        <TopBtn onClick={LogoutHanlder} type="login">
+          로그아웃
+        </TopBtn>
+      </TopBtnBox>
     </NavContainer>
   )
 }
 
 const NavContainer = styled.nav`
-  width: 15rem;
+  width: 7rem;
+  border: 1px solid black;
+  flex-shrink: 0;
+  background-color: black;
 `
 
 const NavFrame = styled.div`
@@ -74,16 +97,43 @@ const NavFrame = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 7rem;
   height: 100vh;
-  padding: 1rem;
+  padding: 1rem 0;
 `
 
 const Logo = styled.div`
-  width: 12rem;
-  height: 3rem;
+  width: 5rem;
+  height: 4rem;
   border-radius: 0.5rem;
-  background-color: black;
+  margin-bottom: 3rem;
+  background-color: gray;
   cursor: pointer;
 `
 
-const BtnFrame = styled.div``
+const BtnFrame = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const TopBtnBox = styled.div`
+  position: fixed;
+  right: 1.5rem;
+  top: 1.5rem;
+  display: flex;
+  color: gray;
+`
+
+const TopBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${({ type }) => (type === 'login' ? '4.5rem' : '2.2rem')};
+  height: 2.2rem;
+  font-weight: 600;
+  color: #535353;
+  border-radius: 1.1rem;
+  margin-left: 0.5rem;
+  background-color: #eaeaea;
+`
