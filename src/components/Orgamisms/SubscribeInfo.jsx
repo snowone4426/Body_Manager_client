@@ -1,8 +1,23 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { SubscribeInfoCard } from '..'
 
 export default function SubscribeInfo() {
+  // const [subData, setSubData] = useState({ end_date: '', pt_remain_count: '' })
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_URL}`)
+  //     .then((res) => {
+  //       if (res.data.message === 'ok') {
+  //         setSubData(res.data.data)
+  //       }
+  //     })
+  //     .catch((err) => console.log(err))
+  // }, [])
+
   const subData = {
     end_date: '2022-11-24',
     pt_remain_count: 11,

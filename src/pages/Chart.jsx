@@ -1,13 +1,59 @@
+import axios from 'axios'
+import moment from 'moment'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { ChartSkeleton } from '../components'
 import { chartActions } from '../store/chart'
+import date from '../store/date'
 
 export default function Chart() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // axios
+    //   .post(`${process.env.REACT_APP_SERVER_URL}/inbody/part`, {
+    //     type: 'muscle',
+    //     date: [moment(new date()).format('YYYY-MM-DD')],
+    //   })
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       dispatch(
+    //         chartActions.changeData({
+    //           dataType: 'radarData',
+    //           dataValue: res.data.data,
+    //         }),
+    //       )
+    //     }
+    //   })
+    //   .catch((err) => console.log(err))
+
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_URL}/inbody/analysis`)
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       chartActions.changeData({
+    //         dataType: 'etcInbody',
+    //         dataValue: res.data.data,
+    //       })
+    //     }
+    //   })
+    //   .catch((err) => console.log(err))
+
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_URL}/inbody/physical`)
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       dispatch(
+    //         chartActions.changeData({
+    //           dataType: 'lineData',
+    //           dataValue: res.data.data,
+    //         }),
+    //       )
+    //     }
+    //   })
+    //   .catch((err) => console.log(err))
+
     dispatch(
       chartActions.changeData({
         dataType: 'radarData',

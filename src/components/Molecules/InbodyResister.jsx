@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -25,6 +26,32 @@ export default function InbodyResister() {
   })
 
   useEffect(() => {
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_APP}/inbody/register`)
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       setInbody({
+    //         weight: res.data.data.weight,
+    //         SMM: res.data.data.SMM,
+    //         BFM: res.data.data.BFM,
+    //         BMI: res.data.data.BMI,
+    //         PBF: res.data.data.PBF,
+    //         WHR: res.data.data.WHR,
+    //         BMR: res.data.data.BMR,
+    //         body_muscle: res.data.data.body_muscle,
+    //         left_hand_muscle: res.data.data.left_hand_muscle,
+    //         right_hand_muscle: res.data.data.right_hand_muscle,
+    //         left_leg_muscle: res.data.data.left_leg_muscle,
+    //         right_leg_muscle: res.data.data.right_hand_muscle,
+    //         body_fat: res.data.data.body_fat,
+    //         left_hand_fat: res.data.data.left_hand_fat,
+    //         right_hand_fat: res.data.data.right_hand_fat,
+    //         left_leg_fat: res.data.data.left_hand_fat,
+    //         right_leg_fat: res.data.data.right_hand_fat,
+    //       })
+    //     }
+    //   })
+    //   .catch((err) => console.log(err))
     const message = 'ok'
     if (message === 'ok') {
       setInbody({
@@ -56,6 +83,12 @@ export default function InbodyResister() {
   }
 
   const submitHanlder = () => {
+    // axios
+    //   .post(`${process.env.REACT_APP_SERVER_APP}/inbody/register`, inbody)
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') navigation('/management')
+    //   })
+    //   .catch((err) => console.log(err))
     alert('등록')
     navigation('/management')
   }

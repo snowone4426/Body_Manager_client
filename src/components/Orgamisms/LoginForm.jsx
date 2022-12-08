@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { authActions } from '../../store/auth'
 import { ModalContainer, IdSearch, PasswordSearch } from '..'
+import axios from 'axios'
 
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
@@ -16,6 +17,12 @@ export default function LoginForm() {
   const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
 
   const loginHanlder = () => {
+    // axios
+    //   .post(`${process.env.REACT_APP_SERVER_URL}/initial/login`, loginInputData)
+    //   .then((res) => {
+    //     dispatch(authActions.login(res.data.data))
+    //     navigate('/management', { replace: true })
+    //   })
     dispatch(authActions.login(loginInputData))
     navigate('/management', { replace: true })
   }

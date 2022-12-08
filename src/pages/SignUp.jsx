@@ -19,6 +19,7 @@ export default function SignUp() {
     birth: '',
     profile: '',
   })
+  const [isDubplicate, setIsDuplicate] = useState({ email: '', phone: '' })
 
   useEffect(() => {
     if (location.state !== null) {
@@ -41,6 +42,15 @@ export default function SignUp() {
       case 'address':
         setMemberInfo({ ...memberInfo, [key]: e })
         return
+      case 'email':
+      case 'phone':
+        setMemberInfo({ ...memberInfo, [key]: e.target.value })
+        setIsDuplicate({
+          ...isDubplicate,
+          [key]: duplicateCheckHanlder(key) !== 'ok',
+        })
+
+        return
       default:
         setMemberInfo({ ...memberInfo, [key]: e.target.value })
     }
@@ -62,16 +72,18 @@ export default function SignUp() {
   }
 
   const duplicateCheckHanlder = (type) => {
+    let result = ''
+
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/initial/${type}check`, {
         [type]: memberInfo[type],
       })
       .then((res) => {
-        if (res.data.message === 'ok') {
-          console.log('ok')
-        }
+        result = res.data.message
       })
       .catch((err) => console.log(err))
+
+    return result
   }
 
   return (
@@ -79,7 +91,7 @@ export default function SignUp() {
       memberInfo={memberInfo}
       inputFn={infoHanlder}
       submitFn={submitHanlder}
-      duplicateCheckHanlder={duplicateCheckHanlder}
+      isDubplicate={isDubplicate}
     />
   )
 }

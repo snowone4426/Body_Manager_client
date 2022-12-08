@@ -7,8 +7,31 @@ import {
   LineChart,
   Line,
 } from 'recharts'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import axios from 'axios'
+
+import { chartActions } from '../../store/chart'
 
 export default function MainDefault() {
+  const dispatch = useDispatch()
+  // const lineData = useSelector(state=>state.chart.lineData)
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/inbody/physical`)
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          dispatch(
+            chartActions.changeData({
+              dataType: 'lineData',
+              dataValue: res.data.data,
+            }),
+          )
+        }
+      })
+      .catch((err) => console.log(err))
+  }, [dispatch])
+
   const lineData = [
     {
       name: 'Page A',

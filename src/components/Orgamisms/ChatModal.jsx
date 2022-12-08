@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 import * as StompJs from '@stomp/stompjs'
 import { useDispatch, useSelector } from 'react-redux'
+import SockJS from 'sockjs-client'
 
 import { ChatList, ChatRoom } from '..'
 import { chatActions } from '../../store/chat'
@@ -42,11 +43,6 @@ export default function ChatModal() {
 
   const connect = () => {
     const connection = new StompJs.Client({
-      brokerURL: 'ws://localhost:8000/ws',
-      connectHeaders: {
-        login: 'user',
-        passcode: 'password',
-      },
       debug: function (str) {
         console.log(str)
       },
@@ -54,6 +50,10 @@ export default function ChatModal() {
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     })
+
+    connection.webSocketFactory = () => {
+      return new SockJS(`${process.env.REACT_APP_SERVER_URL}/chat/inbox`)
+    }
 
     connection.onConnect = () => {
       console.log('socket connect!')
@@ -80,7 +80,7 @@ export default function ChatModal() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/chatlist`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/message/roomlist`)
       .then((res) => {
         setChatList(res.data.data)
       })
