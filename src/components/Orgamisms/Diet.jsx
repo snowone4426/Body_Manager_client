@@ -12,34 +12,38 @@ export default function Diet() {
   const mainPickDate = useSelector((state) => state.date.mainDate)
 
   useEffect(() => {
-    // axios
-    //   .post(`${process.env.REACR_APP_SERVER_URL}/food/list`, {
-    //     date: mainPickDate,
-    //   })
-    //   .then((res) => {
-    //     if (res.data.message === 'ok') {
-    //       setDietData(res.data.data)
-    //     }
-    //   })
-    //   .catch((err) => console.log(err))
+    axios
+      .post(
+        `${process.env.REACR_APP_SERVER_URL}/food/list`,
+        {
+          date: mainPickDate,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          setDietData(res.data.data)
+        }
+      })
+      .catch((err) => console.log(err))
 
-    setDietData({
-      breakfast: {
-        id: 1,
-        photo: 'S3 경로',
-        content: '사과 3개',
-        created_at: '08:34 AM',
-        grade: 2,
-      },
-      lunch: {
-        id: 2,
-        photo: 'S3 경로',
-        content: '삼겹살 5인분',
-        created_at: '12:09 PM',
-        grade: 1,
-      },
-      dinner: {},
-    })
+    // setDietData({
+    //   breakfast: {
+    //     id: 1,
+    //     photo: 'S3 경로',
+    //     content: '사과 3개',
+    //     created_at: '08:34 AM',
+    //     grade: 2,
+    //   },
+    //   lunch: {
+    //     id: 2,
+    //     photo: 'S3 경로',
+    //     content: '삼겹살 5인분',
+    //     created_at: '12:09 PM',
+    //     grade: 1,
+    //   },
+    //   dinner: {},
+    // })
   }, [mainPickDate])
 
   const modalOpenHandler = (time) => {

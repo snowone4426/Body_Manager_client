@@ -51,8 +51,12 @@ export default function SignUpFormList({
             return (
               <SignUpFormInputFrame key={el}>
                 <SignUpInputLabel>
-                  사진등록
-                  <SighUpInput type="file" onChange={(e) => inputFn(e, el)} />
+                  {el}
+                  <SighUpInput
+                    ishidden={true}
+                    type="file"
+                    onChange={(e) => inputFn(e, el)}
+                  />
                 </SignUpInputLabel>
               </SignUpFormInputFrame>
             )

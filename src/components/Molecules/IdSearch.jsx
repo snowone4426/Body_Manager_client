@@ -11,7 +11,9 @@ export default function IdSearch({ modalOpener = () => {} }) {
 
   const submitHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/initial/findEmail`, userInfo)
+      .post(`${process.env.REACT_APP_SERVER_URL}/initial/findEmail`, userInfo, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.message === 'ok') {
           alert(res.data.data.email)

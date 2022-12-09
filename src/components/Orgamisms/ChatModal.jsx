@@ -80,7 +80,9 @@ export default function ChatModal() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/message/roomlist`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/message/roomlist`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setChatList(res.data.data)
       })

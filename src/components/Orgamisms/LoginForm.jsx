@@ -17,14 +17,18 @@ export default function LoginForm() {
   const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
 
   const loginHanlder = () => {
-    // axios
-    //   .post(`${process.env.REACT_APP_SERVER_URL}/initial/login`, loginInputData)
-    //   .then((res) => {
-    //     dispatch(authActions.login(res.data.data))
-    //     navigate('/management', { replace: true })
-    //   })
-    dispatch(authActions.login(loginInputData))
-    navigate('/management', { replace: true })
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/initial/login`,
+        { email: loginInputData.id, password: loginInputData.password },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        dispatch(authActions.login(res.data.data))
+        navigate('/management', { replace: true })
+      })
+    // dispatch(authActions.login(loginInputData))
+    // navigate('/management', { replace: true })
   }
 
   const onChangeHanlder = (e, key) => {

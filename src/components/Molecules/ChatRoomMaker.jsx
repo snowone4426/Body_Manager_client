@@ -24,16 +24,22 @@ export default function ChatRoomMaker({ onClickFn }) {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_APP}/message/memlist`)
+      .get(`${process.env.REACT_APP_SERVER_APP}/message/memlist`, {
+        withCredentials: true,
+      })
       .then((res) => setMemberList[res.data.data])
       .catch((err) => console.log(err))
   }, [])
 
   const chatMakeHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_APP}/message/create`, {
-        receiver_id: 1,
-      })
+      .post(
+        `${process.env.REACT_APP_SERVER_APP}/message/create`,
+        {
+          receiver_id: 1,
+        },
+        { withCredentials: true },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
           onClickFn(res.data.data.room_id)

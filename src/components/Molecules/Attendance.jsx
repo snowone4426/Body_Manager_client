@@ -10,7 +10,11 @@ export default function Attendance() {
 
   const getAttendList = () => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/attend/readDay`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/attend/readDay`,
+        {},
+        { withCredentials: true },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
           setAttendanceRecord(res.data.data)
@@ -19,17 +23,17 @@ export default function Attendance() {
   }
 
   useEffect(() => {
-    // getAttendList()
-    setAttendanceRecord([
-      {
-        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      },
-      {
-        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      },
-    ])
+    getAttendList()
+    // setAttendanceRecord([
+    //   {
+    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //     end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //   },
+    //   {
+    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //     end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //   },
+    // ])
   }, [])
 
   const attendanceHanlder = (type) => {
@@ -37,17 +41,20 @@ export default function Attendance() {
       alert('2회이상 입장할 수 없습니다')
       return
     }
-    alert(type + '시도')
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_SERVER_URL}/attend/register?pt=${
-    //       type === 'pt'
-    //     }`,
-    //   )
-    //   .then((res) => {
-    //     if (res.data.message === 'ok') getAttendList()
-    //   })
-    //   .catch((err) => console.log(err))
+    // alert(type + '시도')
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/attend/register?pt=${
+          type === 'pt'
+        }`,
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          getAttendList()
+        }
+      })
+      .catch((err) => console.log(err))
   }
 
   return (

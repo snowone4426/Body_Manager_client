@@ -31,7 +31,11 @@ export default function PasswordSearch({ modalOpener }) {
 
   const submitHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/initial/mail/check`, userInfo)
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/initial/mail/check`,
+        userInfo,
+        { withCredentials: true },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
           alert(res.data.data.email)
