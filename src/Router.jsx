@@ -26,7 +26,7 @@ export default function Router() {
   // 로그인이 되어있지 않다면 로그인 페이지로 이동시킴
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/login`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/initial/login`,{},{withCredentials:true})
       .then((res) => {
         if (res.data.message === 'not found') {
           navigation('/', { replace: true })

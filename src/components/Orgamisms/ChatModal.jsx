@@ -2,11 +2,13 @@ import axios from 'axios'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
-import * as StompJs from '@stomp/stompjs'
+import { Client } from '@stomp/stompjs'
 import { useDispatch, useSelector } from 'react-redux'
+import SockJS from 'sockjs-client'
 
 import { ChatList, ChatRoom } from '..'
 import { chatActions } from '../../store/chat'
+
 
 export default function ChatModal() {
   const dispatch = useDispatch()
@@ -41,12 +43,12 @@ export default function ChatModal() {
   }
 
   const connect = () => {
-    const connection = new StompJs.Client({
-      brokerURL: 'ws://localhost:8000/ws',
-      connectHeaders: {
-        login: 'user',
-        passcode: 'password',
-      },
+    const connection = new Client({
+      // brokerURL: 'ws://localhost:8081/chat/inbox',
+      // connectHeaders: {
+      //   login: 'user',
+      //   passcode: 'password',
+      // },
       debug: function (str) {
         console.log(str)
       },
@@ -54,6 +56,9 @@ export default function ChatModal() {
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     })
+    console.log(connection)
+
+    connection.webSocketFactory = () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/chat/inbox`)
 
     connection.onConnect = () => {
       console.log('socket connect!')
@@ -79,12 +84,12 @@ export default function ChatModal() {
   }
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/chatlist`)
-      .then((res) => {
-        setChatList(res.data.data)
-      })
-      .catch((err) => console.log(err))
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_URL}/chatlist`)
+    //   .then((res) => {
+    //     setChatList(res.data.data)
+    //   })
+    //   .catch((err) => console.log(err))
 
     connect()
     return () => disConnect()

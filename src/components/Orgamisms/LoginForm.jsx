@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { authActions } from '../../store/auth'
 import { ModalContainer, IdSearch, PasswordSearch } from '..'
+import axios from 'axios'
 
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
@@ -16,9 +17,21 @@ export default function LoginForm() {
   const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
 
   const loginHanlder = () => {
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/initial/login`,{ email : "test12@naver.com",
+    password : "1111"},{withCredentials:true}).then((res)=>console.log(res.data))
     dispatch(authActions.login(loginInputData))
     navigate('/management', { replace: true })
   }
+
+  // const loginHanlder = () => {
+  //     axios.post(`${process.env.REACT_APP_SERVER_URL}/initial/login`,loginInputData,{withCredentials:true})
+  //     .then((res)=>{
+  //       console.log(res.data)
+  //       dispatch(authActions.login(loginInputData));
+  //       navigate('/management', { replace: true });
+  //     })
+      
+  //   }
 
   const onChangeHanlder = (e, key) => {
     setLoginInputData({ ...loginInputData, [key]: e.target.value })
@@ -47,7 +60,7 @@ export default function LoginForm() {
           placeholder="PASSWORD"
         />
         <BtnBox>
-          <LoginSearchBtn onClick={() => navigate('/signup')}>
+          <LoginSearchBtn onClick={()=>axios.get(`${process.env.REACT_APP_SERVER_URL}/initial/login`).then((res)=>console.log(res.data))}>
             회원가입
           </LoginSearchBtn>
           <LoginSearchBtn onClick={() => modalOpener('id')}>

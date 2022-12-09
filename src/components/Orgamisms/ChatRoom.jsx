@@ -21,7 +21,7 @@ export default function ChatRoom({
         return
       }
 
-      client.subscribe(`/from/liar/start/${room_id}`, (data) => {
+      client.subscribe(`/sub/chat/send/1`, (data) => {
         const newMessage = JSON.parse(data.body).message_list
         addContent(newMessage)
       })
@@ -37,22 +37,23 @@ export default function ChatRoom({
       if (!client.connected) return
 
       client.publish({
-        destination: '/to/liar/start/1',
-        body: { content: content },
+        destination: '/pub/chat/mes/1',
+        body: JSON.stringify({content:content}),
       })
     }
   }
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/chatinfo`, {
-        room_id: roomInfo.room_id,
-        offset: 1,
-        limit: 1,
+      .post(`${process.env.REACT_APP_SERVER_URL}/message/content`, {
+        room_id: 1,
+        offset: 0,
+        limit: 5,
       })
       .then((res) => {
-        setRoomInfo({ ...roomInfo, message_list: [...res.data.data] })
-        dispatch(chatActions.connect())
+        // setRoomInfo({ ...roomInfo, message_list: [...res.data.data] })
+        // dispatch(chatActions.connect())
+        console.log(res.data)
       })
 
     subscribe(roomInfo.room_id)
