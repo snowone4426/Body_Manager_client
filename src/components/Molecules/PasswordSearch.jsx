@@ -31,7 +31,11 @@ export default function PasswordSearch({ modalOpener }) {
 
   const submitHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/initial/mail/check`, userInfo)
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/initial/mail/check`,
+        userInfo,
+        { withCredentials: true },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
           alert(res.data.data.email)
@@ -78,7 +82,7 @@ export default function PasswordSearch({ modalOpener }) {
           </label>
         </li>
       </ul>
-      <button onClick={submitHanlder}>찾기</button>
+      <button onClick={submitHanlder}>비밀번호 변경</button>
     </PasswordSearchContainer>
   )
 }

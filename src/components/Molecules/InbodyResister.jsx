@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -25,28 +26,56 @@ export default function InbodyResister() {
   })
 
   useEffect(() => {
-    const message = 'ok'
-    if (message === 'ok') {
-      setInbody({
-        weight: 1,
-        SMM: 2,
-        BFM: 3,
-        BMI: 4,
-        PBF: 5,
-        WHR: 6,
-        BMR: 7,
-        body_muscle: 8,
-        left_hand_muscle: 9,
-        right_hand_muscle: 10,
-        left_leg_muscle: 11,
-        right_leg_muscle: 12,
-        body_fat: 13,
-        left_hand_fat: 14,
-        right_hand_fat: 15,
-        left_leg_fat: 16,
-        right_leg_fat: 17,
+    axios
+      .get(`${process.env.REACT_APP_SERVER_APP}/inbody/register`, {
+        withCredentials: true,
       })
-    }
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          setInbody({
+            weight: res.data.data.weight,
+            SMM: res.data.data.SMM,
+            BFM: res.data.data.BFM,
+            BMI: res.data.data.BMI,
+            PBF: res.data.data.PBF,
+            WHR: res.data.data.WHR,
+            BMR: res.data.data.BMR,
+            body_muscle: res.data.data.body_muscle,
+            left_hand_muscle: res.data.data.left_hand_muscle,
+            right_hand_muscle: res.data.data.right_hand_muscle,
+            left_leg_muscle: res.data.data.left_leg_muscle,
+            right_leg_muscle: res.data.data.right_hand_muscle,
+            body_fat: res.data.data.body_fat,
+            left_hand_fat: res.data.data.left_hand_fat,
+            right_hand_fat: res.data.data.right_hand_fat,
+            left_leg_fat: res.data.data.left_hand_fat,
+            right_leg_fat: res.data.data.right_hand_fat,
+          })
+        }
+      })
+      .catch((err) => console.log(err))
+    // const message = 'ok'
+    // if (message === 'ok') {
+    //   setInbody({
+    //     weight: 1,
+    //     SMM: 2,
+    //     BFM: 3,
+    //     BMI: 4,
+    //     PBF: 5,
+    //     WHR: 6,
+    //     BMR: 7,
+    //     body_muscle: 8,
+    //     left_hand_muscle: 9,
+    //     right_hand_muscle: 10,
+    //     left_leg_muscle: 11,
+    //     right_leg_muscle: 12,
+    //     body_fat: 13,
+    //     left_hand_fat: 14,
+    //     right_hand_fat: 15,
+    //     left_leg_fat: 16,
+    //     right_leg_fat: 17,
+    //   })
+    // }
   }, [])
 
   const inbodyHanlder = (e) => {
@@ -56,6 +85,12 @@ export default function InbodyResister() {
   }
 
   const submitHanlder = () => {
+    // axios
+    //   .post(`${process.env.REACT_APP_SERVER_APP}/inbody/register`, inbody)
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') navigation('/management')
+    //   })
+    //   .catch((err) => console.log(err))
     alert('등록')
     navigation('/management')
   }

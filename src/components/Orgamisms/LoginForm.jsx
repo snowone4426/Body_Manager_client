@@ -17,10 +17,25 @@ export default function LoginForm() {
   const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
 
   const loginHanlder = () => {
+<<<<<<< HEAD
     axios.post(`${process.env.REACT_APP_SERVER_URL}/initial/login`,{ email : "test12@naver.com",
     password : "1111"},{withCredentials:true}).then((res)=>console.log(res.data))
     dispatch(authActions.login(loginInputData))
     navigate('/management', { replace: true })
+=======
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/initial/login`,
+        { email: loginInputData.id, password: loginInputData.password },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        dispatch(authActions.login(res.data.data))
+        navigate('/management', { replace: true })
+      })
+    // dispatch(authActions.login(loginInputData))
+    // navigate('/management', { replace: true })
+>>>>>>> 87eb155a24143a9cb0b952dbae8c7d5ac02033f7
   }
 
   // const loginHanlder = () => {

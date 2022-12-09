@@ -1,21 +1,36 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 export default function PurchaseHistory() {
   const [purchase, setPerchase] = useState({})
   useEffect(() => {
-    setPerchase({
-      '2022-11-22': [
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/account/list`,
         {
-          sub_type: '3개월권',
-          price_info: 150000,
+          page: 1,
+          limit: 10,
         },
-        {
-          sub_type: 'pt n회',
-          price_info: 150000,
-        },
-      ],
-    })
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          setPerchase(res.data.data)
+        }
+      })
+    // setPerchase({
+    //   '2022-11-22': [
+    //     {
+    //       sub_type: '3개월권',
+    //       price_info: 150000,
+    //     },
+    //     {
+    //       sub_type: 'pt n회',
+    //       price_info: 150000,
+    //     },
+    //   ],
+    // })
   }, [])
 
   return (

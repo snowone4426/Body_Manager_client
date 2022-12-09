@@ -5,7 +5,7 @@ import { Introduce, LoginForm } from '..'
 export default function LoginSkeleton() {
   return (
     <LoginSkeletonContainer>
-      <Introduce />
+      {/* <Introduce /> */}
       <LoginForm />
     </LoginSkeletonContainer>
   )
@@ -13,4 +13,5 @@ export default function LoginSkeleton() {
 
 const LoginSkeletonContainer = styled.div`
   display: flex;
+  justify-content: center;
 `

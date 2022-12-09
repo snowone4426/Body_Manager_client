@@ -13,9 +13,13 @@ export default function Diet() {
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACR_APP_SERVER_URL}/food/list`, {
-        date: mainPickDate,
-      })
+      .post(
+        `${process.env.REACR_APP_SERVER_URL}/food/list`,
+        {
+          date: mainPickDate,
+        },
+        { withCredentials: true },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
           setDietData(res.data.data)

@@ -21,7 +21,11 @@ export default function ChatRoom({
         return
       }
 
+<<<<<<< HEAD
       client.subscribe(`/sub/chat/send/1`, (data) => {
+=======
+      client.subscribe(`/sub/chat/send/${room_id}`, (data) => {
+>>>>>>> 87eb155a24143a9cb0b952dbae8c7d5ac02033f7
         const newMessage = JSON.parse(data.body).message_list
         addContent(newMessage)
       })
@@ -37,8 +41,8 @@ export default function ChatRoom({
       if (!client.connected) return
 
       client.publish({
-        destination: '/pub/chat/mes/1',
-        body: JSON.stringify({content:content}),
+        destination: `/pub/chat/mes/${roomInfo.room_id}`,
+        body: JSON.stringify({ content: content }),
       })
     }
   }
@@ -46,9 +50,9 @@ export default function ChatRoom({
   useEffect(() => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/message/content`, {
-        room_id: 1,
-        offset: 0,
-        limit: 5,
+        room_id: roomInfo.room_id,
+        offset: 1,
+        limit: 1,
       })
       .then((res) => {
         // setRoomInfo({ ...roomInfo, message_list: [...res.data.data] })

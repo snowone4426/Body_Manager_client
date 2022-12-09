@@ -3,27 +3,52 @@ import { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 import moment from 'moment'
 import 'moment/locale/ko'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { dateActions } from '../../store/date'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 export default function MainCalander() {
   const dispatch = useDispatch()
   const location = useLocation()
   const pathname = location.pathname
+  const mainDate = useSelector((state) => state.date.mainDate)
 
   const [value, setValue] = useState(new Date())
   const [PTListArr, setPTListArr] = useState([])
   const [attendObj, setAttendArr] = useState({})
 
   useEffect(() => {
-    setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
-    setAttendArr({
-      '2022-11-23': 2,
-      '2022-11-24': 1,
-      '2022-11-25': 0,
-    })
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/ptprogram/listmonth`,
+        {
+          year: moment(mainDate).format('YYYY'),
+          month: moment(mainDate).format('MM'),
+        },
+        { withCredentials: true },
+      )
+      .then((res) => setPTListArr(res.data.data))
+      .catch((err) => console.log(err))
+
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/attend/readmonth`,
+        {
+          year: moment(mainDate).format('YYYY'),
+          month: moment(mainDate).format('MM'),
+        },
+        { withCredentials: true },
+      )
+      .then((res) => setAttendArr(res.data.data))
+      .catch((err) => console.log(err))
+
+    // setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
+    // setAttendArr({
+    //   '2022-11-23': 2,
+    //   '2022-11-24': 1,
+    // })
   }, [])
 
   // 주소가 바뀌면 달력의 선택 날짜를 오늘로 초기화
@@ -47,14 +72,24 @@ export default function MainCalander() {
 
   const calendarMarkHanlder = ({ date, view }) => {
     const tag = []
-    if (moment(date).format('YYYY-MM-DD') === '2022-11-30') {
-      tag.push(<div>today</div>)
+    if (
+      Object.keys(attendObj).includes(moment(date).format('YYYY-MM-DD')) &&
+      attendObj[moment(date).format('YYYY-MM-DD')] === 1
+    ) {
+      tag.push(<div>one</div>)
+    }
+    if (
+      Object.keys(attendObj).includes(moment(date).format('YYYY-MM-DD')) &&
+      attendObj[moment(date).format('YYYY-MM-DD')] === 2
+    ) {
+      tag.push(<div>two</div>)
     }
     if (PTListArr.includes(moment(date).format('YYYY-MM-DD'))) {
       tag.push(<div>PT</div>)
     }
     return tag
   }
+
   return (
     <CalendarContainer>
       <Calendar

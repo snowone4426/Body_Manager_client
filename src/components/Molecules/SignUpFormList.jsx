@@ -3,7 +3,7 @@ import { useDaumPostcodePopup } from 'react-daum-postcode'
 
 export default function SignUpFormList({
   inputFn = (e, key) => {},
-  duplicateCheckHanlder = () => {},
+  isDubplicate = {},
   data = {
     email: '',
     password: '',
@@ -49,41 +49,48 @@ export default function SignUpFormList({
         switch (el) {
           case 'profile':
             return (
-              <li key={el}>
-                <input type="file" onChange={(e) => inputFn(e, el)} />
-              </li>
+              <SignUpFormInputFrame key={el}>
+                <SignUpInputLabel>
+                  {el}
+                  <SighUpInput
+                    ishidden={true}
+                    type="file"
+                    onChange={(e) => inputFn(e, el)}
+                  />
+                </SignUpInputLabel>
+              </SignUpFormInputFrame>
             )
           case 'address':
             return (
-              <li key={el}>
+              <SignUpFormInputFrame key={el}>
+                {data.address}
                 <button type="button" onClick={handleClick}>
-                  Open
+                  주소 찾기
                 </button>
-              </li>
+              </SignUpFormInputFrame>
             )
           case 'email':
           case 'phone':
             return (
-              <li key={el}>
-                <input
+              <SignUpFormInputFrame isDubplicate={isDubplicate} key={el}>
+                {el}
+                <SighUpInput
                   type="text"
                   onChange={(e) => inputFn(e, el)}
                   value={data[el]}
                 />
-                <button onClick={() => duplicateCheckHanlder(el)}>
-                  중복확인
-                </button>
-              </li>
+              </SignUpFormInputFrame>
             )
           default:
             return (
-              <li key={el}>
-                <input
+              <SignUpFormInputFrame key={el}>
+                {el}
+                <SighUpInput
                   type="text"
                   onChange={(e) => inputFn(e, el)}
                   value={data[el]}
                 />
-              </li>
+              </SignUpFormInputFrame>
             )
         }
       })}
@@ -94,4 +101,16 @@ export default function SignUpFormList({
 const SignUpFormListContainer = styled.ul`
   display: flex;
   flex-direction: column;
+`
+const SignUpFormInputFrame = styled.li`
+  width: 30rem;
+  height: 3rem;
+  border: 1px solid black;
+`
+
+const SighUpInput = styled.input``
+
+const SignUpInputLabel = styled.div`
+  border: ${({ isDubplicate }) =>
+    isDubplicate ? '1px solid red' : '1px solid black'};
 `

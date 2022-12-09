@@ -14,9 +14,13 @@ export default function KakaoLogin() {
     const code = location.search.split('=')[1]
     const sendToken = (access_token) => {
       axios
-        .post(`${process.env.REACT_APP_SERVER_URL}/sociallogin`, {
-          access_token: access_token,
-        })
+        .post(
+          `${process.env.REACT_APP_SERVER_URL}/sociallogin`,
+          {
+            access_token: access_token,
+          },
+          { withCredentials: true },
+        )
         .then((res) => {
           switch (res.data.message) {
             case 'not signup':

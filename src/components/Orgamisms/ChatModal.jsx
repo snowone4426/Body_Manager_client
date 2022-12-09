@@ -43,12 +43,16 @@ export default function ChatModal() {
   }
 
   const connect = () => {
+<<<<<<< HEAD
     const connection = new Client({
       // brokerURL: 'ws://localhost:8081/chat/inbox',
       // connectHeaders: {
       //   login: 'user',
       //   passcode: 'password',
       // },
+=======
+    const connection = new StompJs.Client({
+>>>>>>> 87eb155a24143a9cb0b952dbae8c7d5ac02033f7
       debug: function (str) {
         console.log(str)
       },
@@ -59,6 +63,10 @@ export default function ChatModal() {
     console.log(connection)
 
     connection.webSocketFactory = () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/chat/inbox`)
+
+    connection.webSocketFactory = () => {
+      return new SockJS(`${process.env.REACT_APP_SERVER_URL}/chat/inbox`)
+    }
 
     connection.onConnect = () => {
       console.log('socket connect!')
@@ -84,12 +92,23 @@ export default function ChatModal() {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     // axios
     //   .get(`${process.env.REACT_APP_SERVER_URL}/chatlist`)
     //   .then((res) => {
     //     setChatList(res.data.data)
     //   })
     //   .catch((err) => console.log(err))
+=======
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/message/roomlist`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setChatList(res.data.data)
+      })
+      .catch((err) => console.log(err))
+>>>>>>> 87eb155a24143a9cb0b952dbae8c7d5ac02033f7
 
     connect()
     return () => disConnect()
