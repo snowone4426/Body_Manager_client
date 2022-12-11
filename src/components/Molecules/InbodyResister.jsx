@@ -27,7 +27,7 @@ export default function InbodyResister() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_APP}/inbody/register`, {
+      .get(`${process.env.REACT_APP_SERVER_URL}/inbody/data`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -86,7 +86,7 @@ export default function InbodyResister() {
 
   const submitHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_APP}/inbody/register`, inbody)
+      .post(`${process.env.REACT_APP_SERVER_URL}/inbody/register`, inbody)
       .then((res) => {
         if (res.data.message === 'ok') navigation('/management')
       })

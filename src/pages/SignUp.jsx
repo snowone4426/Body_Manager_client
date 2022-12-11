@@ -86,10 +86,15 @@ export default function SignUp() {
 
   const duplicateCheckHanlder = (type, value) => {
     let result = ''
+    let inputValue = value;
+
+    if(type==='phone') {
+      inputValue = inputValue.split('-').join('')
+    }
 
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/initial/${type}check`, {
-        [type]: value,
+        [type]: inputValue,
       })
       .then((res) => {
         result = res.data.message

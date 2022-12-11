@@ -33,6 +33,7 @@ export default function Nav() {
         if (res.data.message === 'ok') {
           navigate(`/`, { replace: true })
           dispatch(authActions.logout())
+          return
         }
         alert('다시 시도해 주세요')
       })

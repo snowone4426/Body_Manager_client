@@ -14,26 +14,38 @@ export default function ChatModal({ onClickFn }) {
   const client = useSelector((state) => state.chat.client)
   const [chatState, setChatState] = useState(true)
   const [chatList, setChatList] = useState([
-    {
-      room_id: 1,
-      receiver_name: '한태규',
-      receiver_profile: 'S3주소',
-    },
-    {
-      room_id: 2,
-      receiver_name: '김철수',
-      receiver_profile: 'S3주소',
-    },
-    {
-      room_id: 3,
-      receiver_name: '3',
-      receiver_profile: 'S3주소',
-    },
+    // {
+    //   room_id: 1,
+    //   receiver_name: '한태규',
+    //   receiver_profile: 'S3주소',
+    // },
+    // {
+    //   room_id: 2,
+    //   receiver_name: '김철수',
+    //   receiver_profile: 'S3주소',
+    // },
+    // {
+    //   room_id: 3,
+    //   receiver_name: '3',
+    //   receiver_profile: 'S3주소',
+    // },
   ])
-  const [roomInfo, setRoomInfo] = useState({ room_id: '', message_list: [] })
+  const [roomInfo, setRoomInfo] = useState({ 
+    room_id: '',
+    receiverInfo:{
+      member_name: '',
+      profile: '',
+    }, 
+    message_list: [] 
+  })
 
-  const roomSetHanlder = (room_id) => {
-    setRoomInfo({ ...roomInfo, room_id: room_id })
+  const roomSetHanlder = (room_id, member_name, profile) => {
+    setRoomInfo({ ...roomInfo,
+      receiverInfo:{
+        member_name: member_name,
+        profile: profile,
+      }, 
+      room_id: room_id })
     roomMoveHanlder()
   }
 

@@ -12,7 +12,6 @@ export default function Attendance() {
     axios
       .get(
         `${process.env.REACT_APP_SERVER_URL}/attend/readDay`,
-        {},
         { withCredentials: true },
       )
       .then((res) => {
@@ -23,17 +22,17 @@ export default function Attendance() {
   }
 
   useEffect(() => {
-    // getAttendList()
-    setAttendanceRecord([
-      {
-        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      },
-      {
-        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        end_time: '',
-      },
-    ])
+    getAttendList()
+    // setAttendanceRecord([
+    //   {
+    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //     end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //   },
+    //   {
+    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+    //     end_time: '',
+    //   },
+    // ])
   }, [])
 
   const attendanceHanlder = (type) => {
@@ -43,9 +42,7 @@ export default function Attendance() {
     }
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_URL}/attend/register?pt=${
-          type === 'pt'
-        }`,
+        `${process.env.REACT_APP_SERVER_URL}/attend/register`,{},
         { withCredentials: true },
       )
       .then((res) => {
@@ -83,6 +80,7 @@ export default function Attendance() {
 
       <RecordBox>
         <RecordTitle>출석기록</RecordTitle>
+        <button onClick={() => attendanceHanlder('common')}>asdasdds</button>
         <AttendanceRecord>
           {attendanceRecord.map((el, idx) => (
             <li key={idx}>

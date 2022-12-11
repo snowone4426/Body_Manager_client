@@ -25,29 +25,6 @@ export default function Router() {
 
   // 로그인이 되어있지 않다면 로그인 페이지로 이동시킴
   useEffect(() => {
-<<<<<<< HEAD
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}/initial/login`,
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (res.data.message === 'not found') {
-          navigation('/', { replace: true })
-          return
-        }
-        const loginInfo = {
-          name: res.data.data.name,
-          profile: res.data.data.profile,
-          type: res.data.data.type,
-        }
-
-        dispatch(authActions.login(loginInfo))
-      })
-      .catch((err) => console.log(err))
-
-=======
->>>>>>> 2bcf23e0a83d7f841c79e28bf875cb94a03fb02e
     if (
       pathname !== '/' &&
       pathname !== '/signup' &&
@@ -70,16 +47,16 @@ export default function Router() {
 
           dispatch(authActions.login(loginInfo))
         })
-        .then(() => {
-          if (
-            !isAuthentication &&
-            pathname !== '/' &&
-            pathname !== '/signup' &&
-            pathname !== '/kakaologin'
-          ) {
-            navigation('/', { replace: true })
-          }
-        })
+        // .then(() => {
+        //   if (
+        //     !isAuthentication &&
+        //     pathname !== '/' &&
+        //     pathname !== '/signup' &&
+        //     pathname !== '/kakaologin'
+        //   ) {
+        //     navigation('/', { replace: true })
+        //   }
+        // })
         .catch((err) => console.log(err))
     }
   }, [])

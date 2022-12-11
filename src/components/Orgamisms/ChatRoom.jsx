@@ -5,12 +5,12 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 export default function ChatRoom({
-  roomInfo,
+  roomInfo = {},
   setRoomInfo = () => {},
   roomMoveHanlder = () => {},
 }) {
   const client = useSelector((state) => state.chat.client)
-  const myName = useSelector((state) => state.auth.name)
+  const myInfo = useSelector((state) => state.auth)
   const [content, setContent] = useState('')
 
   const subscribe = (room_id) => {
@@ -19,16 +19,26 @@ export default function ChatRoom({
         roomMoveHanlder()
         return
       }
-
       client.subscribe(`/sub/chat/send/${room_id}`, (data) => {
-        const newMessage = JSON.parse(data.body).message_list
-        addContent(newMessage)
+        console.log(data)
+        const receiveObj = {
+          member_name: roomInfo.member_name,
+          profile: roomInfo.profile,
+          contents: data.body,
+          created_at: moment(new Date()).format('YYYY-MM-DD'),
+        }
+        addContent(receiveObj)
       })
     }
   }
 
   const addContent = (message) => {
-    setRoomInfo({ ...roomInfo, message_list: [message, ...roomInfo] })
+    setRoomInfo({
+      room_id: roomInfo.room_id,
+      receiverInfo:{
+      member_name: roomInfo.receiverInfo.member_name,
+      profile: roomInfo.receiverInfo.profile,
+    },  message_list: [message, ...roomInfo] })
   }
 
   const messagePublishHanlder = () => {
@@ -37,7 +47,7 @@ export default function ChatRoom({
 
       client.publish({
         destination: `/pub/chat/mes/${roomInfo.room_id}`,
-        body: JSON.stringify({ content: content }),
+        body: JSON.stringify({ content: content,type : myInfo.type }),
       })
     }
   }
@@ -48,9 +58,9 @@ export default function ChatRoom({
         room_id: roomInfo.room_id,
         offset: 1,
         limit: 1,
-      })
+      },{withCredentials:true})
       .then((res) => {
-        setRoomInfo({ ...roomInfo, message_list: [...res.data.data] })
+        setRoomInfo({ ...roomInfo, message_list: res.data.data })
       })
     // setRoomInfo({
     //   ...roomInfo,
@@ -82,7 +92,7 @@ export default function ChatRoom({
           {roomInfo.message_list.map((el) => (
             <ChatCard
               key={el.created_at}
-              isMe={myName === el.member_namemember_name}
+              isMe={myInfo.name === el.member_namemember_name}
             >
               <ChatProfile src={el.profile} alt="profile" />
               <ChatUserInfoBox>

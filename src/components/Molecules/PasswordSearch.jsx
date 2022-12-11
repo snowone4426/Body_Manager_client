@@ -22,23 +22,23 @@ export default function PasswordSearch({ modalOpener }) {
       alert('이메일 형식이 올바르지 않습니다.')
       return
     }
-    // axios
-    //   .post(`${process.env.REACT_APP_SERVER_URL}/initial/mail`, {
-    //     email: userInfo.email,
-    //   })
-    //   .then((res) => {
-    //     if (res.data.message === 'ok') {
-    //       alert('이메일을 확인해주세요')
-    //       setSendEmail(true)
-    //       return
-    //     }
-    //     alert('가입되어있지 않은 정보 입니다')
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //     alert('다시 시도해 주세요')
-    //   })
-    setSendEmail(true)
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/initial/mail`, {
+        email: userInfo.email,
+      })
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          alert('이메일을 확인해주세요')
+          setSendEmail(true)
+          return
+        }
+        alert('가입되어있지 않은 정보 입니다')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('다시 시도해 주세요')
+      })
+    // setSendEmail(true)
   }
 
   const codeHanlder = () => {

@@ -20,36 +20,36 @@ export default function MainCalander() {
   const [attendObj, setAttendArr] = useState({})
 
   useEffect(() => {
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_SERVER_URL}/ptprogram/listmonth`,
-    //     {
-    //       year: moment(mainDate).format('YYYY'),
-    //       month: moment(mainDate).format('MM'),
-    //     },
-    //     { withCredentials: true },
-    //   )
-    //   .then((res) => setPTListArr(res.data.data))
-    //   .catch((err) => console.log(err))
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/ptprogram/listmonth`,
+        {
+          year: moment(mainDate).format('YYYY'),
+          month: moment(mainDate).format('MM'),
+        },
+        { withCredentials: true },
+      )
+      .then((res) => setPTListArr(res.data.data))
+      .catch((err) => console.log(err))
 
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_SERVER_URL}/attend/readmonth`,
-    //     {
-    //       year: moment(mainDate).format('YYYY'),
-    //       month: moment(mainDate).format('MM'),
-    //     },
-    //     { withCredentials: true },
-    //   )
-    //   .then((res) => setAttendArr(res.data.data))
-    //   .catch((err) => console.log(err))
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/attend/readmonth`,
+        {
+          year: moment(mainDate).format('YYYY'),
+          month: moment(mainDate).format('MM'),
+        },
+        { withCredentials: true },
+      )
+      .then((res) => setAttendArr(res.data.data))
+      .catch((err) => console.log(err))
 
-    setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
-    setAttendArr({
-      '2022-11-01': 1,
-      '2022-11-23': 2,
-      '2022-11-24': 1,
-    })
+    // setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
+    // setAttendArr({
+    //   '2022-11-01': 1,
+    //   '2022-11-23': 2,
+    //   '2022-11-24': 1,
+    // })
   }, [])
 
   // 주소가 바뀌면 달력의 선택 날짜를 오늘로 초기화

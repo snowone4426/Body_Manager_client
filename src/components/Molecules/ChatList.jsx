@@ -26,7 +26,7 @@ export default function ChatList({
           chatListData.map((el) => (
             <ChatListCard
               key={el.room_id}
-              onClick={() => onClickFn(el.room_id)}
+              onClick={() => onClickFn(el.room_id,el.receiver_name,el.receiver_profile)}
             >
               <ReceiverProfile
                 src={el.receiver_profile}
