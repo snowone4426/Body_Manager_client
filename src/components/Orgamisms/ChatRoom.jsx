@@ -21,11 +21,7 @@ export default function ChatRoom({
         return
       }
 
-<<<<<<< HEAD
-      client.subscribe(`/sub/chat/send/1`, (data) => {
-=======
       client.subscribe(`/sub/chat/send/${room_id}`, (data) => {
->>>>>>> 87eb155a24143a9cb0b952dbae8c7d5ac02033f7
         const newMessage = JSON.parse(data.body).message_list
         addContent(newMessage)
       })
