@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 
 import { ChartSkeleton } from '../components'
 import { chartActions } from '../store/chart'
-import date from '../store/date'
 
 export default function Chart() {
   const dispatch = useDispatch()
@@ -16,7 +15,7 @@ export default function Chart() {
         `${process.env.REACT_APP_SERVER_URL}/inbody/part`,
         {
           type: 'muscle',
-          date: [moment(new date()).format('YYYY-MM-DD')],
+          date: [moment(new Date()).format('YYYY-MM-DD')],
         },
         { withCredentials: true },
       )
@@ -31,7 +30,6 @@ export default function Chart() {
         }
       })
       .catch((err) => console.log(err))
-
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/inbody/analysis`, {
         withCredentials: true,
@@ -45,7 +43,6 @@ export default function Chart() {
         }
       })
       .catch((err) => console.log(err))
-
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/inbody/physical`, {
         withCredentials: true,
@@ -61,7 +58,6 @@ export default function Chart() {
         }
       })
       .catch((err) => console.log(err))
-
     // dispatch(
     //   chartActions.changeData({
     //     dataType: 'radarData',

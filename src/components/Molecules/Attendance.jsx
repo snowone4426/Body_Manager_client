@@ -23,17 +23,17 @@ export default function Attendance() {
   }
 
   useEffect(() => {
-    getAttendList()
-    // setAttendanceRecord([
-    //   {
-    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    //     end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    //   },
-    //   {
-    //     start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    //     end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-    //   },
-    // ])
+    // getAttendList()
+    setAttendanceRecord([
+      {
+        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      },
+      {
+        start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        end_time: '',
+      },
+    ])
   }, [])
 
   const attendanceHanlder = (type) => {
@@ -41,7 +41,6 @@ export default function Attendance() {
       alert('2회이상 입장할 수 없습니다')
       return
     }
-    // alert(type + '시도')
     axios
       .post(
         `${process.env.REACT_APP_SERVER_URL}/attend/register?pt=${
@@ -50,21 +49,38 @@ export default function Attendance() {
         { withCredentials: true },
       )
       .then((res) => {
-        if (res.data.message === 'ok') {
+        if (res.data.message === 'ok' && type !== 'out') {
+          alert('입장하였습니다')
           getAttendList()
+          return
+        }
+        if (res.data.message === 'ok' && type === 'out') {
+          alert('퇴장하였습니다')
+          getAttendList()
+          return
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        alert('다시 시도해주세요')
+      })
   }
-
   return (
     <AttendanceContainer>
-      <AttendanceBtn onClickFn={() => attendanceHanlder('common')}>
-        asd
-      </AttendanceBtn>
-      <AttendanceBtn onClickFn={() => attendanceHanlder('pt')}>
-        zxc
-      </AttendanceBtn>
+      {!!attendanceRecord.length &&
+      !!attendanceRecord[attendanceRecord.length - 1].end_time ? (
+        <div onClick={() => attendanceHanlder('out')}>퇴장</div>
+      ) : (
+        <>
+          <AttendanceBtn onClick={() => attendanceHanlder('common')}>
+            입장
+          </AttendanceBtn>
+          <AttendanceBtn onClick={() => attendanceHanlder('pt')}>
+            PT 입장
+          </AttendanceBtn>
+        </>
+      )}
+
       <RecordBox>
         <RecordTitle>출석기록</RecordTitle>
         <AttendanceRecord>

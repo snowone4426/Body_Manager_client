@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import { useDaumPostcodePopup } from 'react-daum-postcode'
+import { FaUser } from 'react-icons/fa'
+import { useState } from 'react'
 
 export default function SignUpFormList({
   inputFn = (e, key) => {},
   isDubplicate = {},
   data = {
+    profile: '',
     email: '',
     password: '',
     name: '',
@@ -14,9 +17,9 @@ export default function SignUpFormList({
     height: '',
     remark: '',
     birth: '',
-    profile: '',
   },
 }) {
+  const [imagePreview, setImagePreview] = useState('')
   const dataArr = Object.keys(data)
 
   const open = useDaumPostcodePopup()
@@ -43,53 +46,72 @@ export default function SignUpFormList({
     open({ onComplete: handleComplete })
   }
 
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(fileBlob)
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImagePreview(reader.result)
+        resolve()
+      }
+    })
+  }
+
   return (
     <SignUpFormListContainer>
+      <ProfileLabel>
+        {imagePreview ? (
+          <PreviewImg src={imagePreview} alt="preview" />
+        ) : (
+          <FaUser size={45} />
+        )}
+        <SighUpInput
+          isVisibility={true}
+          type="file"
+          onChange={(e) => {
+            inputFn(e, 'profile')
+            encodeFileToBase64(e.target.files[0])
+          }}
+        />
+      </ProfileLabel>
       {dataArr.map((el) => {
         switch (el) {
           case 'profile':
-            return (
-              <SignUpFormInputFrame key={el}>
-                <SignUpInputLabel>
-                  {el}
-                  <SighUpInput
-                    ishidden={true}
-                    type="file"
-                    onChange={(e) => inputFn(e, el)}
-                  />
-                </SignUpInputLabel>
-              </SignUpFormInputFrame>
-            )
+            return null
           case 'address':
             return (
               <SignUpFormInputFrame key={el}>
-                {data.address}
-                <button type="button" onClick={handleClick}>
+                <AddressModalBtn onClick={handleClick}>
                   주소 찾기
-                </button>
+                </AddressModalBtn>
+                <AddressContent>{data.address}</AddressContent>
               </SignUpFormInputFrame>
             )
           case 'email':
           case 'phone':
             return (
-              <SignUpFormInputFrame isDubplicate={isDubplicate} key={el}>
-                {el}
-                <SighUpInput
-                  type="text"
-                  onChange={(e) => inputFn(e, el)}
-                  value={data[el]}
-                />
+              <SignUpFormInputFrame key={el}>
+                <SignUpInputLabel isDubplicate={isDubplicate[el]}>
+                  <InputTitle>{el}</InputTitle>
+                  <SighUpInput
+                    type="text"
+                    onChange={(e) => inputFn(e, el)}
+                    value={data[el]}
+                  />
+                </SignUpInputLabel>
               </SignUpFormInputFrame>
             )
           default:
             return (
               <SignUpFormInputFrame key={el}>
-                {el}
-                <SighUpInput
-                  type="text"
-                  onChange={(e) => inputFn(e, el)}
-                  value={data[el]}
-                />
+                <SignUpInputLabel>
+                  <InputTitle>{el}</InputTitle>
+                  <SighUpInput
+                    type="text"
+                    onChange={(e) => inputFn(e, el)}
+                    value={data[el]}
+                  />
+                </SignUpInputLabel>
               </SignUpFormInputFrame>
             )
         }
@@ -101,16 +123,76 @@ export default function SignUpFormList({
 const SignUpFormListContainer = styled.ul`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `
-const SignUpFormInputFrame = styled.li`
-  width: 30rem;
-  height: 3rem;
-  border: 1px solid black;
+const SignUpFormInputFrame = styled.li``
+
+const SighUpInput = styled.input`
+  display: ${({ isVisibility }) => (isVisibility ? 'none' : 'default')};
+  font-size: 1.1rem;
+  background-color: transparent;
 `
 
-const SighUpInput = styled.input``
+const InputTitle = styled.h2`
+  font-size: 0.8rem;
+  opacity: 0.7;
+`
 
-const SignUpInputLabel = styled.div`
-  border: ${({ isDubplicate }) =>
-    isDubplicate ? '1px solid red' : '1px solid black'};
+const SignUpInputLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 18rem;
+  height: 2.5rem;
+  border: ${({ isDubplicate }) => (isDubplicate ? '1px solid red' : '')};
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin: 0.2rem;
+  padding: 1rem;
+  background-color: #ebebeb;
+  cursor: text;
+  overflow: hidden;
+`
+
+const AddressContent = styled.div`
+  width: 18rem;
+  height: 2.5rem;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin: 0.2rem;
+  padding: 0.9rem 1rem;
+  background-color: #ebebeb;
+  overflow: hidden;
+`
+
+const AddressModalBtn = styled.button`
+  width: 6rem;
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  color: white;
+  margin: 0.2rem;
+  background-color: #808080;
+`
+
+const ProfileLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid #d2d1d1;
+  border-radius: 100%;
+  margin: 0.5rem 0 1rem;
+  overflow: hidden;
+`
+
+const PreviewImg = styled.img`
+  width: auto;
+  height: 5rem;
 `

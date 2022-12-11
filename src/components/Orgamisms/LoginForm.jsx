@@ -17,23 +17,34 @@ export default function LoginForm() {
   const [loginInputData, setLoginInputData] = useState({ id: '', password: '' })
   const crossOriginIsolated = {withCredentials: true}
   const loginHanlder = () => {
-    
+    // eslint-disable-next-line no-useless-escape
+    const exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+    if (!exptext.test(loginInputData.id)) {
+      alert('이메일 형식이 올바르지 않습니다.')
+      return
+    }
+    if (!loginInputData.password) {
+      alert('비밀번호를 입력해 주세요')
+      return
+    }
     axios
       .post(
         `${process.env.REACT_APP_SERVER_URL}/initial/login`,
         { email: loginInputData.id, password: loginInputData.password},crossOriginIsolated
       )
       .then((res) => {
-        if(res.data.message==="ok"){
-         axios.get(`${process.env.REACT_APP_SERVER_URL}/initial/login`,crossOriginIsolated).then((res)=>{
-          if(res.data.message === "ok" ) {
-            dispatch(authActions.login(res.data.data))
-            navigate('/management', { replace: true })
-          }
-         })
+        if (res.data.message === 'ok') {
+          dispatch(authActions.login(res.data.data))
+          navigate('/management', { replace: true })
+        } else {
+          alert('로그인에 실패하였습니다. 다시 시도해 주세요')
+          setLoginInputData({ id: '', password: '' })
         }
-        
-        
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('로그인에 실패하였습니다. 다시 시도해 주세요')
+        setLoginInputData({ id: '', password: '' })
       })
     // dispatch(authActions.login(loginInputData))
     // navigate('/management', { replace: true })
@@ -41,6 +52,12 @@ export default function LoginForm() {
 
   const onChangeHanlder = (e, key) => {
     setLoginInputData({ ...loginInputData, [key]: e.target.value })
+  }
+
+  const pressEnterHanlder = (e) => {
+    if (e.key === 'Enter') {
+      loginHanlder()
+    }
   }
 
   const modalOpener = (name) => {
@@ -54,26 +71,31 @@ export default function LoginForm() {
   return (
     <LoginFormContainer>
       <LoginFormFrame>
-        <LoginTitle>Body Manager</LoginTitle>
+        <LoginTitle>
+          <img src={`${process.env.PUBLIC_URL}/assets/logo.png`} alt="logo" />
+          Body Manager
+        </LoginTitle>
         <LoginInput
           onChange={(e) => onChangeHanlder(e, 'id')}
+          onKeyDown={pressEnterHanlder}
           value={loginInputData.id}
           placeholder="ID"
         />
         <LoginInput
           onChange={(e) => onChangeHanlder(e, 'password')}
+          onKeyDown={pressEnterHanlder}
           value={loginInputData.password}
           placeholder="PASSWORD"
         />
         <BtnBox>
-          <LoginSearchBtn onClick={()=>axios.get(`${process.env.REACT_APP_SERVER_URL}/initial/login`).then((res)=>console.log(res.data))}>
-            회원가입
-          </LoginSearchBtn>
           <LoginSearchBtn onClick={() => modalOpener('id')}>
             아이디 찾기
           </LoginSearchBtn>
           <LoginSearchBtn onClick={() => modalOpener('password')}>
             비밀번호 찾기
+          </LoginSearchBtn>
+          <LoginSearchBtn onClick={() => navigate('/signup')}>
+            회원가입
           </LoginSearchBtn>
         </BtnBox>
         {isModalOpen && (
@@ -85,25 +107,32 @@ export default function LoginForm() {
             )}
           </ModalContainer>
         )}
-        <LoginBtn onClick={loginHanlder}>Login</LoginBtn>
-
-        <AuthLink href={kakaoLink}>
-          <AuthButtonImg
-            src={`${publicUrl}/assets/kakao_login_medium_narrow.png`}
-            alt="카카오 소셜 로그인"
-          />
-        </AuthLink>
+        <LoginBtnBox>
+          <AuthLink href={kakaoLink}>
+            <AuthButtonImg
+              src={`${publicUrl}/assets/kakao_login_medium_narrow.png`}
+              alt="카카오 소셜 로그인"
+            />
+          </AuthLink>
+          <LoginBtn
+            isFill={!!loginInputData.id && !!loginInputData.password}
+            onClick={loginHanlder}
+          >
+            LOGIN
+          </LoginBtn>
+        </LoginBtnBox>
       </LoginFormFrame>
     </LoginFormContainer>
   )
 }
 
-const LoginFormContainer = styled.div`
+const LoginFormContainer = styled.section`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 30%;
-  height: 100vh;
+  border-radius: 1rem;
+  background-color: white;
+  margin: 7rem;
+  padding: 1.5rem 2rem;
 `
 
 const LoginFormFrame = styled.div`
@@ -112,37 +141,62 @@ const LoginFormFrame = styled.div`
   align-items: center;
   justify-content: center;
   width: 25rem;
-  border-radius: 1rem;
-  padding: 2rem;
-  background-color: #edece0;
 `
 
 const LoginTitle = styled.div`
+  display: flex;
+  align-items: center;
   font-size: 1.7rem;
+  margin: 0.5rem 0;
+
+  & > img {
+    position: relative;
+    bottom: 0.4rem;
+    width: 3rem;
+    margin-right: 0.3rem;
+  }
 `
 
 const LoginInput = styled.input`
   width: 18rem;
   height: 2.5rem;
-  border: 1px solid black;
   border-radius: 0.4rem;
   font-size: 1.2rem;
   margin: 0.2rem;
   padding: 1rem;
+  background-color: #ebebeb;
 `
 
 const LoginBtn = styled.button`
-  width: 18rem;
-  height: 2.5rem;
-  border: 1px solid black;
+  position: relative;
+  bottom: 0.1rem;
+  width: 11rem;
+  height: 2.8rem;
+  font-weight: 600;
   border-radius: 0.4rem;
-  background-color: white;
+  margin-left: 0.3rem;
+  background-color: #cecece;
+  opacity: ${({ isFill }) => (isFill ? 1 : 0.7)};
 `
 
-const BtnBox = styled.div``
+const BtnBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 18rem;
+  padding: 0 0.3rem;
+  margin-bottom: 1rem;
+`
 
-const LoginSearchBtn = styled.button``
+const LoginSearchBtn = styled.button`
+  color: gray;
+  margin: 0 0.2rem;
+`
 
 const AuthLink = styled.a``
 
 const AuthButtonImg = styled.img``
+
+const LoginBtnBox = styled.div`
+  display: flex;
+  align-items: center;
+`

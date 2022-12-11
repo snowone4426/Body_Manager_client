@@ -9,20 +9,19 @@ import SockJS from 'sockjs-client'
 import { ChatList, ChatRoom } from '..'
 import { chatActions } from '../../store/chat'
 
-
-export default function ChatModal() {
+export default function ChatModal({ onClickFn }) {
   const dispatch = useDispatch()
   const client = useSelector((state) => state.chat.client)
   const [chatState, setChatState] = useState(true)
   const [chatList, setChatList] = useState([
     {
       room_id: 1,
-      receiver_name: '1',
+      receiver_name: '한태규',
       receiver_profile: 'S3주소',
     },
     {
       room_id: 2,
-      receiver_name: '2',
+      receiver_name: '김철수',
       receiver_profile: 'S3주소',
     },
     {
@@ -89,15 +88,19 @@ export default function ChatModal() {
       })
       .then((res) => {
         setChatList(res.data.data)
+        connect()
       })
       .catch((err) => console.log(err))
 
-    connect()
     return () => disConnect()
   }, [])
 
   const chatLocation = chatState ? (
-    <ChatList chatListData={chatList} onClickFn={roomSetHanlder} />
+    <ChatList
+      chatListData={chatList}
+      onClickFn={roomSetHanlder}
+      modalClose={onClickFn}
+    />
   ) : (
     <ChatRoom
       roomInfo={roomInfo}

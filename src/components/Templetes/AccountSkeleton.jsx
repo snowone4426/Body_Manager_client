@@ -15,5 +15,6 @@ const AccountSkeletonContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 96vh;
   padding: 2rem;
 `

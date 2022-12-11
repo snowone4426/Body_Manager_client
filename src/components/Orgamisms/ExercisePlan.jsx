@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import moment from 'moment/moment'
 import axios from 'axios'
 
 import { SinglePlan } from '..'

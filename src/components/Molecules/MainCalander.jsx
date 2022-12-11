@@ -4,10 +4,10 @@ import Calendar from 'react-calendar'
 import moment from 'moment'
 import 'moment/locale/ko'
 import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 
 import { dateActions } from '../../store/date'
 import { useLocation } from 'react-router-dom'
-import axios from 'axios'
 
 export default function MainCalander() {
   const dispatch = useDispatch()
@@ -20,35 +20,36 @@ export default function MainCalander() {
   const [attendObj, setAttendArr] = useState({})
 
   useEffect(() => {
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_URL}/ptprogram/listmonth`,
-        {
-          year: moment(mainDate).format('YYYY'),
-          month: moment(mainDate).format('MM'),
-        },
-        { withCredentials: true },
-      )
-      .then((res) => setPTListArr(res.data.data))
-      .catch((err) => console.log(err))
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_URL}/ptprogram/listmonth`,
+    //     {
+    //       year: moment(mainDate).format('YYYY'),
+    //       month: moment(mainDate).format('MM'),
+    //     },
+    //     { withCredentials: true },
+    //   )
+    //   .then((res) => setPTListArr(res.data.data))
+    //   .catch((err) => console.log(err))
 
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_URL}/attend/readmonth`,
-        {
-          year: moment(mainDate).format('YYYY'),
-          month: moment(mainDate).format('MM'),
-        },
-        { withCredentials: true },
-      )
-      .then((res) => setAttendArr(res.data.data))
-      .catch((err) => console.log(err))
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_URL}/attend/readmonth`,
+    //     {
+    //       year: moment(mainDate).format('YYYY'),
+    //       month: moment(mainDate).format('MM'),
+    //     },
+    //     { withCredentials: true },
+    //   )
+    //   .then((res) => setAttendArr(res.data.data))
+    //   .catch((err) => console.log(err))
 
-    // setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
-    // setAttendArr({
-    //   '2022-11-23': 2,
-    //   '2022-11-24': 1,
-    // })
+    setPTListArr(['2022-11-01', '2022-11-02', '2022-11-03', '2022-11-30'])
+    setAttendArr({
+      '2022-11-01': 1,
+      '2022-11-23': 2,
+      '2022-11-24': 1,
+    })
   }, [])
 
   // 주소가 바뀌면 달력의 선택 날짜를 오늘로 초기화
@@ -76,16 +77,16 @@ export default function MainCalander() {
       Object.keys(attendObj).includes(moment(date).format('YYYY-MM-DD')) &&
       attendObj[moment(date).format('YYYY-MM-DD')] === 1
     ) {
-      tag.push(<div>one</div>)
+      tag.push(<AttendanceDot color="#58b69bbd" />)
     }
     if (
       Object.keys(attendObj).includes(moment(date).format('YYYY-MM-DD')) &&
       attendObj[moment(date).format('YYYY-MM-DD')] === 2
     ) {
-      tag.push(<div>two</div>)
+      tag.push(<AttendanceDot color="#f09275b9" />)
     }
     if (PTListArr.includes(moment(date).format('YYYY-MM-DD'))) {
-      tag.push(<div>PT</div>)
+      tag.push(<PTDate />)
     }
     return tag
   }
@@ -217,4 +218,23 @@ const CalendarContainer = styled.div`
   .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #e6e6e6;
   }
+`
+
+const AttendanceDot = styled.div`
+  position: absolute;
+  width: 1.1rem;
+  height: 0.3rem;
+  border-radius: 0.4rem;
+  background-color: ${({ color }) => color};
+  transform: translate(0.96rem, 0.25rem);
+`
+
+const PTDate = styled.div`
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  background-color: blue;
+  transform: translate(0.75rem, -1.25rem);
+  opacity: 0.2;
 `

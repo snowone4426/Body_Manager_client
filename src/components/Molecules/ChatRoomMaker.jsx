@@ -7,28 +7,28 @@ export default function ChatRoomMaker({ onClickFn }) {
   const [memberList, setMemberList] = useState([
     {
       member_id: 1,
-      receiver_name: '1',
+      receiver_name: '한태규',
       receiver_profile: 'S3주소',
     },
     {
       member_id: 2,
-      receiver_name: '2',
+      receiver_name: '전찬석',
       receiver_profile: 'S3주소',
     },
     {
       member_id: 3,
-      receiver_name: '3',
+      receiver_name: '자동차',
       receiver_profile: 'S3주소',
     },
   ])
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_APP}/message/memlist`, {
-        withCredentials: true,
-      })
-      .then((res) => setMemberList[res.data.data])
-      .catch((err) => console.log(err))
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_APP}/message/memlist`, {
+    //     withCredentials: true,
+    //   })
+    //   .then((res) => setMemberList[res.data.data])
+    //   .catch((err) => console.log(err))
   }, [])
 
   const chatMakeHanlder = () => {
@@ -48,7 +48,7 @@ export default function ChatRoomMaker({ onClickFn }) {
   }
   return (
     <ChatRoomMakerContainer>
-      <div>대상 선택</div>
+      <div>대상 : </div>
       <select>
         {memberList.map((el) => (
           <option key={el.member_id} value={el.member_id}>
@@ -61,6 +61,17 @@ export default function ChatRoomMaker({ onClickFn }) {
   )
 }
 
-const ChatRoomMakerContainer = styled.div``
+const ChatRoomMakerContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  align-items: center;
+  border-radius: 0.5rem 0rem 0.5rem 0.5rem;
+  color: white;
+  margin-right: 1.4rem;
+  padding: 1rem;
+  background-color: #3d3d3d;
+`
 
-const ChatMakeBtn = styled.button``
+const ChatMakeBtn = styled.button`
+  color: white;
+`
