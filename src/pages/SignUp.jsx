@@ -19,7 +19,10 @@ export default function SignUp() {
     birth: '',
     profile: '',
   })
-  const [isDubplicate, setIsDuplicate] = useState({ email: '', phone: '' })
+  const [isDubplicate, setIsDuplicate] = useState({
+    email: false,
+    phone: false,
+  })
 
   useEffect(() => {
     if (location.state !== null) {
@@ -47,7 +50,7 @@ export default function SignUp() {
         setMemberInfo({ ...memberInfo, [key]: e.target.value })
         setIsDuplicate({
           ...isDubplicate,
-          [key]: duplicateCheckHanlder(key) !== 'ok',
+          [key]: duplicateCheckHanlder(key, e.target.value) !== 'ok',
         })
 
         return
@@ -59,24 +62,34 @@ export default function SignUp() {
   const submitHanlder = () => {
     const formData = new FormData()
 
-    Object.keys(memberInfo).forEach((el) => formData.append(el, memberInfo[el]))
+    Object.keys(memberInfo).forEach((el) => {
+      if (el === 'phone') {
+        formData.append(el, memberInfo[el].split('-').join(''))
+        return
+      }
+      formData.append(el, memberInfo[el])
+    })
 
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/initial/join`, formData)
       .then((res) => {
         if (res.data.message === 'ok') {
+          alert('회원가입에 성공하였습니다')
           navigation('/', { replace: true })
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        alert('다시 시도해 주세요')
+      })
   }
 
-  const duplicateCheckHanlder = (type) => {
+  const duplicateCheckHanlder = (type, value) => {
     let result = ''
 
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/initial/${type}check`, {
-        [type]: memberInfo[type],
+        [type]: value,
       })
       .then((res) => {
         result = res.data.message

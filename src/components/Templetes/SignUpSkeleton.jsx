@@ -9,7 +9,9 @@ export default function SignUpSkeleton({
   isDubplicate = {},
 }) {
   return (
-    <SignUpSkeletonContainer>
+    <SignUpSkeletonContainer
+      url={`${process.env.PUBLIC_URL}/assets/running.jpg`}
+    >
       <SignUpFormBox
         data={memberInfo}
         isDubplicate={isDubplicate}
@@ -22,7 +24,14 @@ export default function SignUpSkeleton({
 
 const SignUpSkeletonContainer = styled.main`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin: 2rem;
+  height: 100%;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.25)
+    ),
+    ${({ url }) => `url(${url})`};
+  background-size: cover;
+  overflow: hidden;
 `

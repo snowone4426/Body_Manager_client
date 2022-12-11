@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import axios from 'axios'
+import moment from 'moment/moment'
+import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 import { loadTossPayments } from '@tosspayments/payment-sdk'
 
 import { MembershipPriceInfo, MembershipForm } from '..'
-import moment from 'moment/moment'
-import { useSelector } from 'react-redux'
 
 export default function Membership() {
   const userName = useSelector((state) => state.auth.name)
@@ -200,21 +200,26 @@ export default function Membership() {
           )
         }
       })
+      .catch((err) => {
+        console.log(err)
+        alert('다시 시도해 주세요')
+      })
   }
 
   return (
     <MembershipContainer>
-      <FormTitle>Membership</FormTitle>
       <MembershipPriceInfo priceInfo={priceInfo.price} />
       <MembershipForm
         priceInfo={priceInfo}
         selectClickFn={perchaseListAddHanlder}
         toggleFn={toggleFn}
+        clickEvent={clickEvent}
       />
-      <button onClick={clickEvent}>구매</button>
     </MembershipContainer>
   )
 }
 
-const MembershipContainer = styled.div``
-const FormTitle = styled.div``
+const MembershipContainer = styled.div`
+  display: flex;
+  align-items: center;
+`

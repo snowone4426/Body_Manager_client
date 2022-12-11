@@ -6,6 +6,7 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Legend,
 } from 'recharts'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -36,39 +37,64 @@ export default function MainDefault() {
 
   // const lineData = [
   //   {
-  //     name: 'Page A',
-  //     uv: 4000,
-  //     pv: 2400,
+  //     name: '2022-11-15',
+  //     weight: 10,
+  //     SMM: 4,
+  //     BFM: 6,
   //   },
   //   {
-  //     name: 'Page B',
-  //     uv: 3000,
-  //     pv: 1398,
+  //     name: '2022-11-16',
+  //     weight: 12,
+  //     SMM: 4,
+  //     BFM: 8,
   //   },
   //   {
-  //     name: 'Page C',
-  //     uv: 2000,
-  //     pv: 9800,
+  //     name: '2022-11-17',
+  //     weight: 13,
+  //     SMM: 5,
+  //     BFM: 8,
   //   },
   //   {
-  //     name: 'Page D',
-  //     uv: 2780,
-  //     pv: 3908,
+  //     name: '2022-11-18',
+  //     weight: 15,
+  //     SMM: 6,
+  //     BFM: 9,
   //   },
   //   {
-  //     name: 'Page E',
-  //     uv: 1890,
-  //     pv: 4800,
+  //     name: '2022-11-19',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
   //   },
   //   {
-  //     name: 'Page F',
-  //     uv: 2390,
-  //     pv: 3800,
+  //     name: '2022-11-20',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
   //   },
   //   {
-  //     name: 'Page G',
-  //     uv: 3490,
-  //     pv: 4300,
+  //     name: '2022-11-21',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
+  //   },
+  //   {
+  //     name: '2022-11-22',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
+  //   },
+  //   {
+  //     name: '2022-11-23',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
+  //   },
+  //   {
+  //     name: '2022-11-24',
+  //     weight: 0,
+  //     SMM: 0,
+  //     BFM: 0,
   //   },
   // ]
   return (
@@ -88,8 +114,10 @@ export default function MainDefault() {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Legend />
+          <Line type="monotone" dataKey="weight" stroke="#8884d8" />
+          <Line type="monotone" dataKey="SMM" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="BFM" stroke="#ca8a82" />
         </LineChart>
       </ResponsiveContainer>
     </MainDefaultContainer>

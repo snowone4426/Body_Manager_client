@@ -25,54 +25,61 @@ export default function Router() {
 
   // 로그인이 되어있지 않다면 로그인 페이지로 이동시킴
   useEffect(() => {
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_URL}/initial/login`,
-        {},
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (res.data.message === 'not found') {
-          navigation('/', { replace: true })
-          return
-        }
-        const loginInfo = {
-          name: res.data.data.name,
-          profile: res.data.data.profile,
-          type: res.data.data.type,
-        }
-
-        dispatch(authActions.login(loginInfo))
-      })
-      .catch((err) => console.log(err))
-
     if (
-      !isAuthentication &&
       pathname !== '/' &&
       pathname !== '/signup' &&
       pathname !== '/kakaologin'
     ) {
-      navigation('/', { replace: true })
+      axios
+        .get(`${process.env.REACT_APP_SERVER_URL}/initial/login`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.message === 'not found') {
+            navigation('/', { replace: true })
+            return
+          }
+          const loginInfo = {
+            name: res.data.data.name,
+            profile: res.data.data.profile,
+            type: res.data.data.type,
+          }
+
+          dispatch(authActions.login(loginInfo))
+        })
+        .then(() => {
+          if (
+            !isAuthentication &&
+            pathname !== '/' &&
+            pathname !== '/signup' &&
+            pathname !== '/kakaologin'
+          ) {
+            navigation('/', { replace: true })
+          }
+        })
+        .catch((err) => console.log(err))
     }
-  }, [dispatch, isAuthentication, navigation, pathname])
+  }, [])
 
   return (
     <RouterContainer>
       {location.pathname !== '/' && location.pathname !== '/signup' && <Nav />}
-      <MainContainer>
+      <MainContainer
+        path={location.pathname !== '/' && location.pathname !== '/signup'}
+      >
         <MainFrame
           path={location.pathname !== '/' && location.pathname !== '/signup'}
         >
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup" element={<SignUp />} />x
             <Route path="/kakaologin" element={<KakaoLogin />} />
             <Route path="management" element={<Management />}>
               <Route path="" element={<MainDefault />} />
-              <Route path="diet" element={<Diet />} />
-              <Route path="inbodyresister" element={<InbodyResister />} />
               <Route path="attendance" element={<Attendance />} />
               <Route path="exerciseplan" element={<ExercisePlan />} />
+              <Route path="diet" element={<Diet />} />
+              <Route path="inbodyresister" element={<InbodyResister />} />
             </Route>
             <Route path="chart" element={<Chart />} />
             <Route path="account" element={<Account />} />
@@ -91,15 +98,18 @@ const RouterContainer = styled.div`
 `
 
 const MainContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
-  padding: 1rem;
+  padding: ${({ path }) => (!path ? '0' : '1rem')};
   background-color: black;
 `
 const MainFrame = styled.div`
   flex-shrink: 0;
-  width: ${({ path }) => (!path ? 'calc(100vw - 2rem)' : 'calc(100vw - 9rem)')};
-  height: 96vh;
-  border-radius: 1rem;
+  width: ${({ path }) => (!path ? '100vw' : 'calc(100vw - 9rem)')};
+  height: ${({ path }) => (!path ? '100vh' : '96vh')};
+  border-radius: ${({ path }) => (!path ? '0' : '1rem')};
   background-color: white;
   overflow: scroll;
   box-shadow: inset 0.2rem 0.2rem 0.3rem gray;

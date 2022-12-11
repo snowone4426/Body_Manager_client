@@ -12,6 +12,7 @@ import {
 
 import { ProfileBox, BtnList, ChatModal, ModalContainer } from '..'
 import { authActions } from '../../store/auth'
+import axios from 'axios'
 
 export default function Nav() {
   const navigate = useNavigate()
@@ -24,8 +25,21 @@ export default function Nav() {
   }
 
   const LogoutHanlder = () => {
-    navigate(`/`, { replace: true })
-    dispatch(authActions.logout())
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/initial/logout`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          navigate(`/`, { replace: true })
+          dispatch(authActions.logout())
+        }
+        alert('다시 시도해 주세요')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('다시 시도해 주세요')
+      })
   }
 
   const btnListDataArr = [
@@ -62,10 +76,15 @@ export default function Nav() {
     <NavContainer>
       <NavFrame>
         <BtnFrame>
-          <Logo onClick={() => navButtonClickHandler('management')} />
+          <Logo onClick={() => navButtonClickHandler('management')}>
+            <LogoImg
+              src={`${process.env.PUBLIC_URL}/assets/logo.png`}
+              alt="logo"
+            />
+          </Logo>
           {chatOpen && (
             <ModalContainer onClickFn={ChatModalOpenHandler}>
-              <ChatModal />
+              <ChatModal onClickFn={ChatModalOpenHandler} />
             </ModalContainer>
           )}
           <BtnList btnListDataArr={btnListDataArr} />
@@ -103,12 +122,19 @@ const NavFrame = styled.div`
 `
 
 const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 5rem;
-  height: 4rem;
-  border-radius: 0.5rem;
+  height: 5rem;
+  border-radius: 1.5rem;
   margin-bottom: 3rem;
-  background-color: gray;
+  background-color: white;
   cursor: pointer;
+`
+
+const LogoImg = styled.img`
+  width: 4.5rem;
 `
 
 const BtnFrame = styled.div`

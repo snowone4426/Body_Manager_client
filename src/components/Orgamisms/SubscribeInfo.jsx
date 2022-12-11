@@ -26,14 +26,23 @@ export default function SubscribeInfo() {
   // }
   return (
     <SubscribeInfoContainer>
-      <SubscribeInfoCard title="회원권 잔여 일수" data={subData.end_date} />
-      <SubscribeInfoCard title="PT 잔여 일수" data={subData.pt_remain_count} />
+      <SubscribeInfoCard
+        title="회원권 기간"
+        data={subData.end_date}
+        color="#3d5956"
+      />
+      <SubscribeInfoCard
+        title="PT 잔여 일수"
+        data={subData.pt_remain_count}
+        color="#c59234"
+      />
     </SubscribeInfoContainer>
   )
 }
 
 const SubscribeInfoContainer = styled.section`
   display: flex;
-  width: 60vw;
-  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding-left: 9.5rem;
 `
