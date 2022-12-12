@@ -40,14 +40,38 @@ export default function ExercisePlan() {
 
   return (
     <ExercisePlanContainer>
-      <div>{mainPickDate}</div>
+      <Title>운동 목록 리스트</Title>
+      <SinglePlan
+        planData={{
+          title: '이름',
+          weight: '무게',
+          count: '횟수',
+        }}
+      />
+      <Bar />
       {planArr.map((el) => (
-        <li key={`${el.title} ${el.weight} ${el.count}`}>
+        <ExList key={`${el.title} ${el.weight} ${el.count}`}>
           <SinglePlan planData={el} />
-        </li>
+        </ExList>
       ))}
     </ExercisePlanContainer>
   )
 }
 
-const ExercisePlanContainer = styled.ul``
+const ExercisePlanContainer = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+`
+
+const Title = styled.h1`
+  font-size: 3rem;
+`
+
+const ExList = styled.li``
+
+const Bar = styled.div`
+  width: 60%;
+  border-bottom: 1px solid black;
+`

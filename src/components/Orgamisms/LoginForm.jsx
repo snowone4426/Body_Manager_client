@@ -1,11 +1,11 @@
 import styled from 'styled-components'
+import axios from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { authActions } from '../../store/auth'
 import { ModalContainer, IdSearch, PasswordSearch } from '..'
-import axios from 'axios'
 
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL
@@ -18,37 +18,37 @@ export default function LoginForm() {
 
   const loginHanlder = () => {
     // eslint-disable-next-line no-useless-escape
-    const exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
-    if (!exptext.test(loginInputData.id)) {
-      alert('이메일 형식이 올바르지 않습니다.')
-      return
-    }
-    if (!loginInputData.password) {
-      alert('비밀번호를 입력해 주세요')
-      return
-    }
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_URL}/initial/login`,
-        { email: loginInputData.id, password: loginInputData.password },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (res.data.message === 'ok') {
-          dispatch(authActions.login(res.data.data))
-          navigate('/management', { replace: true })
-        } else {
-          alert('로그인에 실패하였습니다. 다시 시도해 주세요')
-          setLoginInputData({ id: '', password: '' })
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        alert('로그인에 실패하였습니다. 다시 시도해 주세요')
-        setLoginInputData({ id: '', password: '' })
-      })
-    // dispatch(authActions.login(loginInputData))
-    // navigate('/management', { replace: true })
+    // const exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+    // if (!exptext.test(loginInputData.id)) {
+    //   alert('이메일 형식이 올바르지 않습니다.')
+    //   return
+    // }
+    // if (!loginInputData.password) {
+    //   alert('비밀번호를 입력해 주세요')
+    //   return
+    // }
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_URL}/initial/login`,
+    //     { email: loginInputData.id, password: loginInputData.password },
+    //     { withCredentials: true },
+    //   )
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       dispatch(authActions.login(res.data.data))
+    //       navigate('/management', { replace: true })
+    //     } else {
+    //       alert('로그인에 실패하였습니다. 다시 시도해 주세요')
+    //       setLoginInputData({ id: '', password: '' })
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //     alert('로그인에 실패하였습니다. 다시 시도해 주세요')
+    //     setLoginInputData({ id: '', password: '' })
+    //   })
+    dispatch(authActions.login(loginInputData))
+    navigate('/management', { replace: true })
   }
 
   const onChangeHanlder = (e, key) => {

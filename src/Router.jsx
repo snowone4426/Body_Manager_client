@@ -72,7 +72,7 @@ export default function Router() {
         >
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />x
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/kakaologin" element={<KakaoLogin />} />
             <Route path="management" element={<Management />}>
               <Route path="" element={<MainDefault />} />

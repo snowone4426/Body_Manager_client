@@ -31,25 +31,26 @@ export default function Attendance() {
       },
       {
         start_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-        end_time: '',
+        end_time: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
       },
     ])
   }, [])
 
   const attendanceHanlder = (type) => {
-    if (attendanceRecord.length === 2 && attendanceRecord[1].end_time !== '') {
+    if (attendanceRecord.length === 2 && !!attendanceRecord[1].end_time) {
       alert('2회이상 입장할 수 없습니다')
       return
     }
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_URL}/attend/register?pt=${
-          type === 'pt'
-        }`,
-        { withCredentials: true },
+        `${process.env.REACT_APP_SERVER_URL}/attend/register`,
+        {},
+        {
+          withCredentials: true,
+        },
       )
       .then((res) => {
-        if (res.data.message === 'ok' && type !== 'out') {
+        if (res.data.message === 'ok' && type !== '') {
           alert('입장하였습니다')
           getAttendList()
           return
@@ -69,16 +70,13 @@ export default function Attendance() {
     <AttendanceContainer>
       {!!attendanceRecord.length &&
       !!attendanceRecord[attendanceRecord.length - 1].end_time ? (
-        <div onClick={() => attendanceHanlder('out')}>퇴장</div>
-      ) : (
         <>
-          <AttendanceBtn onClick={() => attendanceHanlder('common')}>
+          <AttendanceBtn onClickFn={() => attendanceHanlder('enter')}>
             입장
           </AttendanceBtn>
-          <AttendanceBtn onClick={() => attendanceHanlder('pt')}>
-            PT 입장
-          </AttendanceBtn>
         </>
+      ) : (
+        <div onClick={() => attendanceHanlder('out')}>퇴장</div>
       )}
 
       <RecordBox>
@@ -95,7 +93,9 @@ export default function Attendance() {
   )
 }
 
-const AttendanceContainer = styled.div``
+const AttendanceContainer = styled.div`
+  padding: 2rem;
+`
 
 const RecordBox = styled.div``
 
