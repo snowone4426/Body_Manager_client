@@ -9,7 +9,7 @@ import { MembershipPriceInfo, MembershipForm } from '..'
 
 export default function Membership() {
   const userName = useSelector((state) => state.auth.name)
-  const [priceInfo, setPriceInfo] = useState({ price: [], pt: [] })
+  const [priceInfo, setPriceInfo] = useState({ price: [], PT: [] })
   const [perchaseList, setPerchseList] = useState([])
 
   useEffect(() => {
@@ -76,8 +76,10 @@ export default function Membership() {
     let result = 0
     arr.forEach((el) => {
       if (el.type === 'pt') {
+        // console.log(priceInfo.PT.filter((ele) => ele.pt_id === el.id)[0].pt_price)
+        // console.log(el.count)
         result +=
-          priceInfo.pt.filter((ele) => ele.pt_id === el.id)[0].pt_price *
+          priceInfo.PT.filter((ele) => ele.pt_id === el.id)[0].pt_price *
           el.count
         return
       }
@@ -100,7 +102,7 @@ export default function Membership() {
           id: priceInfo.price[2].price_id,
           type: 'price',
           count: 1,
-          start: moment(new Date()).format('YYYY-MM_DD'),
+          start: moment(new Date()).format('YYYY-MM-DD'),
         })
         setPerchseList(filterList)
       }
@@ -110,10 +112,10 @@ export default function Membership() {
       )
       if (filterList.filter((el) => el.price_id > 2).length === 0) {
         filterList.unshift({
-          id: priceInfo.pt[0].pt_id,
+          id: priceInfo.PT[0].pt_id,
           type: 'pt',
           count: 1,
-          start: moment(new Date()).format('YYYY-MM_DD'),
+          start: moment(new Date()).format('YYYY-MM-DD'),
         })
       }
       setPerchseList(filterList)
@@ -124,7 +126,7 @@ export default function Membership() {
     type,
     perchaseNum,
     value,
-    date = moment(new Date()).format('YYYY-MM_DD'),
+    date = moment(new Date()).format('YYYY-MM-DD'),
   ) => {
     const perchaseCopy = [...perchaseList]
     switch (type) {
@@ -172,12 +174,12 @@ export default function Membership() {
 
   const clickEvent = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/account/order`, perchaseList, {
+      .post(`${process.env.REACT_APP_SERVER_URL}/account/order`, {order_list:perchaseList}, {
         withCredentials: true,
       })
       .then((res) => {
         if (res.data.message === 'ok') {
-          loadTossPayments(process.env.REACT_APP_CLIENTKEY).then(
+          loadTossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq").then(
             (tossPayments) => {
               tossPayments
                 .requestPayment('카드', {
@@ -188,7 +190,6 @@ export default function Membership() {
                   successUrl: `${process.env.REACT_APP_CLIENT_URL}/account`,
                   // failUrl: `${process.env.REACT_APP_CLIENT_URL}/account`,
                 })
-                .then((res) => console.log(res))
                 .catch((error) => {
                   if (error.code === 'USER_CANCEL') {
                     console.log('사용자가 결제창을 닫음')

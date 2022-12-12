@@ -7,11 +7,11 @@ export default function PurchaseHistory() {
   const [purchase, setPerchase] = useState({})
   const [page, setPage] = useState(0)
   useEffect(() => {
-    axios
-      .get(
+    axios 
+      .post(
         `${process.env.REACT_APP_SERVER_URL}/account/list`,
         {
-          page: 1,
+          page: 0,
           limit: 10,
         },
         { withCredentials: true },

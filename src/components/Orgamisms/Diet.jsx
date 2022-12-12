@@ -59,9 +59,10 @@ export default function Diet() {
   }
   return (
     <DietContainer>
-      <div>{mainPickDate}</div>
+      {/* <div>{mainPickDate}</div> */}
+      <Title>식단표</Title>
       <DietList>
-        {Object.keys(dietData).map((el) => (
+        {Object.keys(dietData).sort().map((el) => (
           <li onClick={() => modalOpenHandler(el)} key={el}>
             <SingleDiet info={dietData[el]} />
           </li>
@@ -80,10 +81,19 @@ export default function Diet() {
   )
 }
 
-const DietContainer = styled.div``
+const DietContainer = styled.div`
+
+`
 
 const DietList = styled.ul`
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin-left: 1rem;
+`
+
+const Title = styled.div`
+font-size : 1.5rem;
+font-weight: 600;
+  text-align:center;
+  margin-bottom: 1rem;
 `

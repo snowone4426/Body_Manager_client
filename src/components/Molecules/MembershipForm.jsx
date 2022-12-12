@@ -4,7 +4,7 @@ import { useState } from 'react'
 export default function MembershipForm({
   priceInfo = {
     price: [],
-    pt: [],
+    PT: [],
   },
   selectClickFn = () => {},
   toggleFn = () => {},
@@ -43,8 +43,8 @@ export default function MembershipForm({
       <MembershipFormSelect
         onChange={(e) => selectClickFn('pt', e.target.value, 1)}
       >
-        {priceInfo.pt &&
-          priceInfo.pt.map((el, idx) => (
+        {priceInfo.PT &&
+          priceInfo.PT.map((el, idx) => (
             <option value={el.pt_id} key={idx}>
               {el.trainer_name}
               {el.pt_price}
@@ -59,7 +59,7 @@ export default function MembershipForm({
       <ToggleBtn onClick={() => toggleHanlder('membership')}>
         Membership
       </ToggleBtn>
-      <ToggleBtn onClick={() => toggleHanlder('pt')}>PT</ToggleBtn>
+      <ToggleBtn onClick={() => toggleHanlder('PT')}>PT</ToggleBtn>
       <MembershipFormFrame>
         {toggle === 'membership' ? membership : pt}
         <MembershipFormList>

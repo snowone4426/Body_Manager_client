@@ -9,7 +9,7 @@ export default function AttendanceBtn({ children, onClickFn }) {
 }
 
 const AttendanceBtnContainer = styled.button`
-  width: 6rem;
+  width: 8rem;
   height: 3rem;
   font-size: 1.5rem;
   border-radius: 0.5rem;

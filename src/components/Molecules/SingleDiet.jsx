@@ -6,24 +6,47 @@ export default function SingleDiet({ info }) {
   return (
     <SingleDietContainer>
       <PhotoFrame>
-        <img src={photo} alt="food" />
+        <DietImg src={photo} alt="food" />
       </PhotoFrame>
       <InfoFrame>
-        <div>{content}</div>
-        <div>{created_at}</div>
+        <Content>{content}</Content>
+        <Time>{created_at}</Time>
       </InfoFrame>
-      <ScoreColor>{grade}</ScoreColor>
+      {/* <ScoreColor>{grade}</ScoreColor> */}
     </SingleDietContainer>
   )
 }
 
 const SingleDietContainer = styled.div`
   display: flex;
-  border: 1px solid black;
+  background-color : #d3d3d3;
+  border-radius : 1rem;
+  padding : 1rem;
+  height: 15rem;
+  margin: 0.1rem;
 `
 
 const PhotoFrame = styled.div``
 
-const InfoFrame = styled.div``
+const InfoFrame = styled.div`
+display:flex;
+flex-direction : column;
+justify-content: space-between;
+margin: 0.5rem;
+`
+
+const Content = styled.div`
+font-size : 1rem`
+
+const Time = styled.div`
+  font-size: 0.8rem;
+  color: gray;
+`
 
 const ScoreColor = styled.div``
+
+const DietImg = styled.img`
+width: 12rem;
+border-radius : 0.5rem;
+background-color: black;
+`

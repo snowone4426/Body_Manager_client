@@ -30,12 +30,13 @@ export default function AddDiet({ time, dietData, onClickFn = () => {} }) {
 
     if (isEmpty) {
       axios
-        .post(`${process.env.REACT_APP_SERVER_URL}/food/register`, formData)
+        .post(`${process.env.REACT_APP_SERVER_URL}/food/register`, formData,{ withCredentials: true })
         .then((res) => {
           if (res.data.message === 'ok') {
             alert('등록되었습니다')
             onClickFn()
           }
+          onClickFn()
         })
         .catch((err) => {
           alert('등록에 실패하였습니다')
@@ -47,12 +48,12 @@ export default function AddDiet({ time, dietData, onClickFn = () => {} }) {
     formData.append("food_id", dietData.id)
 
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/food/modify`, formData)
+      .post(`${process.env.REACT_APP_SERVER_URL}/food/modify`, formData,{ withCredentials: true })
       .then((res) => {
         if (res.data.message === 'ok') {
           alert('등록되었습니다')
-          onClickFn()
         }
+        onClickFn()
       })
       .catch((err) => {
         alert('등록에 실패하였습니다')
