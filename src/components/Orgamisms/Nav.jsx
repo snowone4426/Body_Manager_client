@@ -49,11 +49,11 @@ export default function Nav() {
       context: 'management',
       onClickFn: () => navButtonClickHandler('management'),
     },
-    {
-      icon: <FaHeartbeat className="icon" size="50" />,
-      context: 'chart',
-      onClickFn: () => navButtonClickHandler('chart'),
-    },
+    // {
+    //   icon: <FaHeartbeat className="icon" size="50" />,
+    //   context: 'chart',
+    //   onClickFn: () => navButtonClickHandler('chart'),
+    // },
     {
       icon: <FaMoneyCheck className="icon" size="50" />,
       context: 'account',

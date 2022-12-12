@@ -1,11 +1,11 @@
 import styled from 'styled-components'
+import axios from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { authActions } from '../../store/auth'
 import { ModalContainer, IdSearch, PasswordSearch } from '..'
-import axios from 'axios'
 
 export default function LoginForm() {
   const publicUrl = process.env.PUBLIC_URL

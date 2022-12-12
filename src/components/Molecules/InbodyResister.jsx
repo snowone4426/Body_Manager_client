@@ -34,12 +34,12 @@ export default function InbodyResister() {
         if (res.data.message === 'ok') {
           setInbody({
             weight: res.data.data.weight,
-            SMM: res.data.data.SMM,
-            BFM: res.data.data.BFM,
-            BMI: res.data.data.BMI,
-            PBF: res.data.data.PBF,
-            WHR: res.data.data.WHR,
-            BMR: res.data.data.BMR,
+            smm: res.data.data.SMM,
+            bfm: res.data.data.BFM,
+            bmi: res.data.data.BMI,
+            pbf: res.data.data.PBF,
+            whr: res.data.data.WHR,
+            bmr: res.data.data.BMR,
             body_muscle: res.data.data.body_muscle,
             left_hand_muscle: res.data.data.left_hand_muscle,
             right_hand_muscle: res.data.data.right_hand_muscle,
@@ -86,7 +86,7 @@ export default function InbodyResister() {
 
   const submitHanlder = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/inbody/register`, inbody)
+      .post(`${process.env.REACT_APP_SERVER_URL}/inbody/register`, inbody,{withCredentials:true})
       .then((res) => {
         if (res.data.message === 'ok') navigation('/management')
       })
@@ -121,7 +121,7 @@ export default function InbodyResister() {
             {Object.keys(inbody)
               .slice(
                 Object.keys(inbody).length / 2,
-                Object.keys(inbody).length - 1,
+                Object.keys(inbody).length,
               )
               .map((el) => (
                 <InputList key={el}>

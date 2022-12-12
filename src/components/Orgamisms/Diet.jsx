@@ -14,7 +14,7 @@ export default function Diet() {
   useEffect(() => {
     axios
       .post(
-        `${process.env.REACR_APP_SERVER_URL}/food/list`,
+        `http://localhost:8081/food/list`,
         {
           date: mainPickDate,
         },

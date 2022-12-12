@@ -10,7 +10,7 @@ export default function AddDiet({ time, dietData, onClickFn = () => {} }) {
   })
   const inputHanlder = (e, key) => {
     switch (key) {
-      case 'profile':
+      case 'food_img':
         setDietInfo({ ...dietInfo, [key]: e.target.files[0] })
         return
       default:
@@ -21,8 +21,12 @@ export default function AddDiet({ time, dietData, onClickFn = () => {} }) {
   const submitHanlder = () => {
     const isEmpty = !Object.keys(dietData).length
     const formData = new FormData()
-
-    Object.keys(dietInfo).forEach((el) => formData.append(el, dietInfo[el]))
+    
+    Object.keys(dietInfo).forEach((el) => {
+      console.log(dietInfo[el])
+      formData.append(el, dietInfo[el])
+    })
+    
 
     if (isEmpty) {
       axios
@@ -40,7 +44,7 @@ export default function AddDiet({ time, dietData, onClickFn = () => {} }) {
       return
     }
 
-    formData.append('food_id', dietData.food_id)
+    formData.append("food_id", dietData.id)
 
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/food/modify`, formData)
