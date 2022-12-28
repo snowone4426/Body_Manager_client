@@ -20,7 +20,6 @@ export default function ChatRoom({
         return
       }
       client.subscribe(`/sub/chat/send/${room_id}`, (data) => {
-        console.log(data)
         const receiveObj = {
           member_name: roomInfo.member_name,
           profile: roomInfo.profile,
@@ -33,12 +32,25 @@ export default function ChatRoom({
   }
 
   const addContent = (message) => {
-    setRoomInfo({
-      room_id: roomInfo.room_id,
-      receiverInfo:{
-      member_name: roomInfo.receiverInfo.member_name,
-      profile: roomInfo.receiverInfo.profile,
-    },  message_list: [message, ...roomInfo.message_list] })
+    console.log(message.contents)
+    console.log(roomInfo)
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/message/content`, {
+        room_id: roomInfo.room_id,
+        offset: 0,
+        limit: 10,
+      },{withCredentials:true})
+      .then((res) => {
+        setRoomInfo({
+          room_id: roomInfo.room_id,
+          receiverInfo:{
+            member_name: roomInfo.receiverInfo.member_name,
+            profile: roomInfo.receiverInfo.profile,
+          },  
+          message_list: [message.contents, ...res.data.data.reverse()] 
+        })
+      })
+    
   }
 
   const messagePublishHanlder = () => {
@@ -99,9 +111,9 @@ export default function ChatRoom({
       <ChatTitle>ChatRoom</ChatTitle>
       <ChatFrame>
         <ChatCardBox>
-          {roomInfo.message_list.map((el) => (
+          {roomInfo.message_list.map((el,idx) => (
             <ChatCard
-              key={el.created_at}
+              key={idx}
               isMe={myInfo.name === el.member_namemember_name}
             >
               <ChatProfile src={el.profile} alt="profile" />

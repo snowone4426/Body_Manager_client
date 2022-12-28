@@ -79,7 +79,7 @@ export default function MembershipForm({
             <MembershipInput
               type="number"
               onChange={(e) => {
-                selectClickFn('cloth', 1, e.target.value)
+                selectClickFn('cloth', 2, e.target.value)
                 setInputValue({ ...inputValue, cloth: e.target.value })
               }}
               value={inputValue.cloth}

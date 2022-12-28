@@ -21,22 +21,23 @@ export default function ChatRoomMaker({ onClickFn }) {
     //   receiver_profile: 'S3주소',
     // },
   ])
+  const [selectMember,setSelectMember] = useState()
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/message/memlist`, {
         withCredentials: true,
       })
-      .then((res) => setMemberList[res.data.data])
+      .then((res) => setMemberList([...res.data.data]))
       .catch((err) => console.log(err))
   }, [])
 
-  const chatMakeHanlder = () => {
+  const chatMakeHanlder = (id) => {
     axios
       .post(
         `${process.env.REACT_APP_SERVER_URL}/message/create`,
         {
-          receiver_id: 1,
+          receiver_id: id,
         },
         { withCredentials: true },
       )
@@ -49,14 +50,14 @@ export default function ChatRoomMaker({ onClickFn }) {
   return (
     <ChatRoomMakerContainer>
       <div>대상 : </div>
-      <select>
+      <select onChange={(e)=>setSelectMember(e.target.value)}>
         {memberList.map((el) => (
           <option key={el.member_id} value={el.member_id}>
             {el.receiver_name}
           </option>
         ))}
       </select>
-      <ChatMakeBtn onClick={chatMakeHanlder}>방만들기</ChatMakeBtn>
+      <ChatMakeBtn onClick={()=>chatMakeHanlder(selectMember)}>방만들기</ChatMakeBtn>
     </ChatRoomMakerContainer>
   )
 }

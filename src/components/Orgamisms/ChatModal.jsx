@@ -56,7 +56,7 @@ export default function ChatModal({ onClickFn }) {
   const connect = () => {
     const connection = new Client({
       debug: function (str) {
-        console.log(str)
+        // console.log(str)
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
