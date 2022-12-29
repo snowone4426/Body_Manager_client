@@ -10,8 +10,7 @@ export default function Login() {
   const path = location.pathname
 
   useEffect(() => {
-    // if (isAuth && path !== '/')
-    navigation('/management', { replace: true })
+    if (isAuth && path !== '/') navigation('/management', { replace: true })
   }, [isAuth, navigation, path])
 
   return <LoginSkeleton />
