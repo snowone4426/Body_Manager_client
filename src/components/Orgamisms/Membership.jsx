@@ -13,63 +13,63 @@ export default function Membership() {
   const [perchaseList, setPerchseList] = useState([])
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/account/price`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.message === 'ok') {
-          setPriceInfo(res.data.data)
-          setPerchseList([
-            {
-              id: res.data.data.price[2].price_id,
-              type: 'price',
-              count: 1,
-              start: moment(new Date()).format('YYYY-MM_DD'),
-            },
-          ])
-        }
-      })
-      .catch((err) => console.log(err))
-    // setPriceInfo({
-    //   price: [
-    //     {
-    //       price_id: 1,
-    //       price_name: '운동복',
-    //       price_info: 10000,
-    //     },
-    //     {
-    //       price_id: 2,
-    //       price_name: '케비넷',
-    //       price_info: 10000,
-    //     },
-    //     {
-    //       price_id: 3,
-    //       price_name: '3개월권',
-    //       price_info: 150000,
-    //     },
-    //     {
-    //       price_id: 4,
-    //       price_name: '6개월권',
-    //       price_info: 300000,
-    //     },
-    //   ],
-    //   pt: [
-    //     {
-    //       pt_id: 1,
-    //       trainer_name: '한태규',
-    //       pt_price: 300000,
-    //     },
-    //   ],
-    // })
-    // setPerchseList([
-    //   {
-    //     id: '3',
-    //     type: 'price',
-    //     count: 1,
-    //     start: moment(new Date()).format('YYYY-MM_DD'),
-    //   },
-    // ])
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER_URL}/account/price`, {
+    //     withCredentials: true,
+    //   })
+    //   .then((res) => {
+    //     if (res.data.message === 'ok') {
+    //       setPriceInfo(res.data.data)
+    //       setPerchseList([
+    //         {
+    //           id: res.data.data.price[2].price_id,
+    //           type: 'price',
+    //           count: 1,
+    //           start: moment(new Date()).format('YYYY-MM_DD'),
+    //         },
+    //       ])
+    //     }
+    //   })
+    //   .catch((err) => console.log(err))
+    setPriceInfo({
+      price: [
+        {
+          price_id: 1,
+          price_name: '운동복',
+          price_info: 10000,
+        },
+        {
+          price_id: 2,
+          price_name: '케비넷',
+          price_info: 10000,
+        },
+        {
+          price_id: 3,
+          price_name: '3개월권',
+          price_info: 150000,
+        },
+        {
+          price_id: 4,
+          price_name: '6개월권',
+          price_info: 300000,
+        },
+      ],
+      PT: [
+        {
+          pt_id: 1,
+          trainer_name: '한태규',
+          pt_price: 300000,
+        },
+      ],
+    })
+    setPerchseList([
+      {
+        id: '3',
+        type: 'price',
+        count: 1,
+        start: moment(new Date()).format('YYYY-MM_DD'),
+      },
+    ])
   }, [])
 
   const totalPriceCalc = (arr) => {
@@ -174,12 +174,16 @@ export default function Membership() {
 
   const clickEvent = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/account/order`, {order_list:perchaseList}, {
-        withCredentials: true,
-      })
+      .post(
+        `${process.env.REACT_APP_SERVER_URL}/account/order`,
+        { order_list: perchaseList },
+        {
+          withCredentials: true,
+        },
+      )
       .then((res) => {
         if (res.data.message === 'ok') {
-          loadTossPayments("test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq").then(
+          loadTossPayments('test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq').then(
             (tossPayments) => {
               tossPayments
                 .requestPayment('카드', {
