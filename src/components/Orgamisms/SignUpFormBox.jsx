@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { SignUpFormList } from '..'
@@ -5,7 +7,7 @@ import { SignUpFormList } from '..'
 export default function SignUpFormBox({
   inputFn = (e, key) => {},
   submitFn = () => {},
-  isDubplicate = {},
+  validationCheck = {},
   data = {
     email: '',
     password: '',
@@ -19,6 +21,18 @@ export default function SignUpFormBox({
     profile: '',
   },
 }) {
+  const [canSubmit, setCanSubmit] = useState(false)
+
+  useEffect(() => {
+    Object.keys(data).forEach((el) => {
+      if (!!data[el].length) {
+        setCanSubmit(false)
+        return
+      }
+      setCanSubmit(true)
+    })
+  }, [data])
+
   return (
     <SignUpFormContainer>
       <SignUpFormFrame>
@@ -26,9 +40,15 @@ export default function SignUpFormBox({
         <SignUpFormList
           inputFn={inputFn}
           data={data}
-          isDubplicate={isDubplicate}
+          validationCheck={validationCheck}
         />
-        <SubmitBtn onClick={submitFn}>등록</SubmitBtn>
+        <SubmitBtn
+          canSubmit={canSubmit}
+          disabled={!canSubmit}
+          onClick={submitFn}
+        >
+          등록
+        </SubmitBtn>
       </SignUpFormFrame>
     </SignUpFormContainer>
   )
@@ -68,4 +88,6 @@ const SubmitBtn = styled.button`
   color: white;
   margin-top: 1rem;
   background-color: #7b7b7b;
+  cursor: ${({ canSubmit }) => (canSubmit ? 'pointer' : 'not-allowed')};
+  opacity: ${({ canSubmit }) => (canSubmit ? 1 : 0.5)};
 `

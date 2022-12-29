@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 export default function SignUpFormList({
   inputFn = (e, key) => {},
-  isDubplicate = {},
+  validationCheck = {},
   data = {
     profile: '',
     email: '',
@@ -57,6 +57,54 @@ export default function SignUpFormList({
     })
   }
 
+  const inputList = dataArr.map((el) => {
+    switch (el) {
+      case 'profile':
+        return null
+      case 'address':
+        return (
+          <SignUpFormInputFrame key={el}>
+            <AddressModalBtn onClick={handleClick}>주소 찾기</AddressModalBtn>
+            <AddressContent>{data.address}</AddressContent>
+          </SignUpFormInputFrame>
+        )
+      case 'gender':
+        return (
+          <SignUpFormInputFrame key={el}>
+            <GenderBtnBox>
+              <GenderBtn
+                value="M"
+                onClick={(e) => inputFn(e, el)}
+                isSelect={data[el] === 'M'}
+              >
+                남자
+              </GenderBtn>
+              <GenderBtn
+                value="F"
+                onClick={(e) => inputFn(e, el)}
+                isSelect={data[el] === 'F'}
+              >
+                여자
+              </GenderBtn>
+            </GenderBtnBox>
+          </SignUpFormInputFrame>
+        )
+      default:
+        return (
+          <SignUpFormInputFrame key={el}>
+            <SignUpInputLabel validationCheck={validationCheck[el]}>
+              <InputTitle>{el}</InputTitle>
+              <SighUpInput
+                type="text"
+                onChange={(e) => inputFn(e, el)}
+                value={data[el]}
+              />
+            </SignUpInputLabel>
+          </SignUpFormInputFrame>
+        )
+    }
+  })
+
   return (
     <SignUpFormListContainer>
       <ProfileLabel>
@@ -68,54 +116,14 @@ export default function SignUpFormList({
         <SighUpInput
           isVisibility={true}
           type="file"
+          accept="image/png, image/jpeg"
           onChange={(e) => {
             inputFn(e, 'profile')
             encodeFileToBase64(e.target.files[0])
           }}
         />
       </ProfileLabel>
-      {dataArr.map((el) => {
-        switch (el) {
-          case 'profile':
-            return null
-          case 'address':
-            return (
-              <SignUpFormInputFrame key={el}>
-                <AddressModalBtn onClick={handleClick}>
-                  주소 찾기
-                </AddressModalBtn>
-                <AddressContent>{data.address}</AddressContent>
-              </SignUpFormInputFrame>
-            )
-          case 'email':
-          case 'phone':
-            return (
-              <SignUpFormInputFrame key={el}>
-                <SignUpInputLabel isDubplicate={isDubplicate[el]}>
-                  <InputTitle>{el}</InputTitle>
-                  <SighUpInput
-                    type="text"
-                    onChange={(e) => inputFn(e, el)}
-                    value={data[el]}
-                  />
-                </SignUpInputLabel>
-              </SignUpFormInputFrame>
-            )
-          default:
-            return (
-              <SignUpFormInputFrame key={el}>
-                <SignUpInputLabel>
-                  <InputTitle>{el}</InputTitle>
-                  <SighUpInput
-                    type="text"
-                    onChange={(e) => inputFn(e, el)}
-                    value={data[el]}
-                  />
-                </SignUpInputLabel>
-              </SignUpFormInputFrame>
-            )
-        }
-      })}
+      {inputList}
     </SignUpFormListContainer>
   )
 }
@@ -144,7 +152,7 @@ const SignUpInputLabel = styled.label`
   justify-content: center;
   width: 18rem;
   height: 2.5rem;
-  border: ${({ isDubplicate }) => (isDubplicate ? '1px solid red' : '')};
+  border: ${({ validationCheck }) => (validationCheck ? '1px solid red' : '')};
   border-radius: 0.4rem;
   font-size: 1.2rem;
   white-space: nowrap;
@@ -195,4 +203,24 @@ const ProfileLabel = styled.label`
 const PreviewImg = styled.img`
   width: auto;
   height: 5rem;
+`
+
+const GenderBtnBox = styled.div`
+  display: flex;
+`
+
+const GenderBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8.8rem;
+  height: 2.5rem;
+  border: ${({ validationCheck }) => (validationCheck ? '1px solid red' : '')};
+  border-radius: 0.4rem;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+  padding: 1rem;
+  background-color: #ebebeb;
+  overflow: hidden;
+  opacity: ${({ isSelect }) => (isSelect ? 1 : 0.5)};
 `

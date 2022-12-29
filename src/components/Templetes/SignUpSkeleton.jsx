@@ -6,7 +6,7 @@ export default function SignUpSkeleton({
   memberInfo = {},
   inputFn = (e, key) => {},
   submitFn = () => {},
-  isDubplicate = {},
+  validationCheck = {},
 }) {
   return (
     <SignUpSkeletonContainer
@@ -14,7 +14,7 @@ export default function SignUpSkeleton({
     >
       <SignUpFormBox
         data={memberInfo}
-        isDubplicate={isDubplicate}
+        validationCheck={validationCheck}
         inputFn={inputFn}
         submitFn={submitFn}
       />

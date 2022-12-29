@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { SignUpSkeleton } from '../components'
+import { Validation } from '../hooks/validation'
 
 export default function SignUp() {
   const location = useLocation()
@@ -13,15 +14,18 @@ export default function SignUp() {
     name: '',
     address: '',
     phone: '',
-    gender: '',
+    gender: 'M',
     height: '',
     remark: '',
     birth: '',
     profile: '',
   })
-  const [isDubplicate, setIsDuplicate] = useState({
+  const [validationCheck, setValidationCheck] = useState({
     email: false,
     phone: false,
+    password: false,
+    birth: false,
+    name: false,
   })
 
   useEffect(() => {
@@ -48,18 +52,28 @@ export default function SignUp() {
       case 'email':
       case 'phone':
         setMemberInfo({ ...memberInfo, [key]: e.target.value })
-        setIsDuplicate({
-          ...isDubplicate,
-          [key]: duplicateCheckHanlder(key, e.target.value) !== 'ok',
-        })
-
+        validationCheckHanlder(key, e.target.value)
         return
       default:
         setMemberInfo({ ...memberInfo, [key]: e.target.value })
+        validationCheckHanlder(key, e.target.value)
     }
   }
 
-  const submitHanlder = () => {
+  const submitHanlder = async () => {
+    let valCheck = true
+
+    Object.entries(validationCheck).forEach((el) => {
+      if (valCheck && el[1]) {
+        valCheck = false
+        alert(el[0] + '를 확인해 주세요')
+      }
+    })
+
+    if (!valCheck) {
+      return
+    }
+
     const formData = new FormData()
 
     Object.keys(memberInfo).forEach((el) => {
@@ -76,6 +90,8 @@ export default function SignUp() {
         if (res.data.message === 'ok') {
           alert('회원가입에 성공하였습니다')
           navigation('/', { replace: true })
+        } else {
+          alert('다시 시도해 주세요')
         }
       })
       .catch((err) => {
@@ -84,24 +100,51 @@ export default function SignUp() {
       })
   }
 
-  const duplicateCheckHanlder = (type, value) => {
-    let result = ''
-    let inputValue = value;
+  const validationCheckHanlder = (type, value) => {
+    let inputValue = value
 
-    if(type==='phone') {
+    if (type === 'phone') {
       inputValue = inputValue.split('-').join('')
     }
 
-    axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/initial/${type}check`, {
-        [type]: inputValue,
-      })
-      .then((res) => {
-        result = res.data.message
-      })
-      .catch((err) => console.log(err))
+    const result = Validation(type, value)
 
-    return result
+    if (result) {
+      setValidationCheck({
+        ...validationCheck,
+        [type]: result,
+      })
+      return
+    }
+
+    switch (type) {
+      case 'phone':
+      case 'email':
+        axios
+          .post(`${process.env.REACT_APP_SERVER_URL}/initial/${type}check`, {
+            [type]: inputValue,
+          })
+          .then((res) => {
+            setValidationCheck({
+              ...validationCheck,
+              [type]: res.data.message !== 'ok',
+            })
+          })
+          .catch((err) => {
+            console.log(err)
+            setValidationCheck({
+              ...validationCheck,
+              [type]: true,
+            })
+          })
+        return
+      default:
+        setValidationCheck({
+          ...validationCheck,
+          [type]: result,
+        })
+        return
+    }
   }
 
   return (
@@ -109,7 +152,7 @@ export default function SignUp() {
       memberInfo={memberInfo}
       inputFn={infoHanlder}
       submitFn={submitHanlder}
-      isDubplicate={isDubplicate}
+      validationCheck={validationCheck}
     />
   )
 }

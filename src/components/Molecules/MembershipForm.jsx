@@ -93,7 +93,7 @@ export default function MembershipForm({
             onChange={(e) => {
               setIsDisable({ ...isDisable, cabinet: e.target.checked })
               if (!e.target.checked) {
-                selectClickFn('cabinet', 1, '')
+                selectClickFn('cabinet', 2, '')
                 setInputValue({ ...inputValue, cabinet: '' })
               }
             }}
@@ -105,7 +105,7 @@ export default function MembershipForm({
             <MembershipInput
               type="number"
               onChange={(e) => {
-                selectClickFn('cabinet', 2, e.target.value)
+                selectClickFn('cabinet', 1, e.target.value)
                 setInputValue({ ...inputValue, cabinet: e.target.value })
               }}
               value={inputValue.cabinet}

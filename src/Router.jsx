@@ -57,7 +57,11 @@ export default function Router() {
         //     navigation('/', { replace: true })
         //   }
         // })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err)
+          dispatch(authActions.logout())
+          navigation('/', { replace: true })
+        })
     }
   }, [])
 
